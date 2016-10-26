@@ -240,6 +240,8 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
+    console.log('metadata: ');
+    console.log(data);
     self.receiverStreamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
