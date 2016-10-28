@@ -156,6 +156,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         document.getElementById('time-value').innerHTML
           = Math.ceil(parseFloat(adData.duration)
             - parseFloat(adData.currentTime));
+        document.getElementById('ad-ui').style.display = 'block';
       },
       false);
 };
