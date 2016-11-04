@@ -252,7 +252,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
-  this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
+  //this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
 };
 
 /**
