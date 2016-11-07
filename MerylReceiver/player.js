@@ -14,6 +14,7 @@ var Player = function(mediaElement) {
   this.seekToTimeAfterAdBreak_ = 0;
   this.startTime_ = 0;
   this.adIsPlaying_ = false;
+  this.metadata_ = [];
   this.mediaElement_ = mediaElement;
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
@@ -244,7 +245,8 @@ Player.prototype.onStreamDataReceived = function(url) {
   host.processMetadata = function(type, data, timestamp) {
     console.log('metadata: ');
     console.log(data);
-    self.receiverStreamManager_.processMetadata(type, data, timestamp);
+    self.metadata_.push({type: type, data: data, timestamp: timestamp});
+    //self.receiverStreamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
@@ -252,6 +254,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
+  console.log(this.castPlayer_);
   //this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
 };
 
