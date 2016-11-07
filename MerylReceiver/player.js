@@ -242,7 +242,7 @@ Player.prototype.onProgress = function() {
     if (metadata.timestamp <= currentTime) {
       this.receiverStreamManager_.processMetadata(metadata.type, metadata.data, metadata.timestamp);
       this.metadata_.splice(i, 1);
-      console.log("Processing metadata:");
+      console.log('Processing metadata: ' + currentTime);
       console.log(metadata);
     }
   }
