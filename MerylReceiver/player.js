@@ -16,6 +16,7 @@ var Player = function(mediaElement) {
   this.adIsPlaying_ = false;
   this.metadata_ = [];
   this.mediaElement_ = mediaElement;
+  this.mediaElement_.onprogress = this.onProgress.bind(this);
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
@@ -228,6 +229,23 @@ Player.prototype.onLoad = function(event) {
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host));*/
+};
+
+
+/**
+ * Called when we mediaElement has a progress update.
+ */
+Player.prototype.onProgress = function() {
+  var currentTime = this.mediaElement_.currentTime;
+  for (var i = 0; i < this.metadata_.length(); i++) {
+    var metadata = this.metadata_[i];
+    if (metadata.timestamp <= currentTime) {
+      self.receiverStreamManager_.processMetadata(metadata.type, metadata.data, metadata.timestamp);
+      this.metadata_.splice(i, 1);
+      console.log("Processing metadata:");
+      console.log(metadata);
+    }
+  }
 };
 
 
