@@ -16,7 +16,7 @@ var Player = function(mediaElement) {
   this.adIsPlaying_ = false;
   this.metadata_ = [];
   this.mediaElement_ = mediaElement;
-  this.mediaElement_.onprogress = this.onProgress.bind(this);
+  this.mediaElement_.ontimeupdate = this.onTimeUpdate.bind(this);
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
@@ -233,9 +233,9 @@ Player.prototype.onLoad = function(event) {
 
 
 /**
- * Called when we mediaElement has a progress update.
+ * Called when the video time is updated.
  */
-Player.prototype.onProgress = function() {
+Player.prototype.onTimeUpdate = function() {
   var currentTime = this.mediaElement_.currentTime;
   for (var i = 0; i < this.metadata_.length; i++) {
     var metadata = this.metadata_[i];
