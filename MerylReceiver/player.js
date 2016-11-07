@@ -237,7 +237,7 @@ Player.prototype.onLoad = function(event) {
  */
 Player.prototype.onProgress = function() {
   var currentTime = this.mediaElement_.currentTime;
-  for (var i = 0; i < this.metadata_.length(); i++) {
+  for (var i = 0; i < this.metadata_.length; i++) {
     var metadata = this.metadata_[i];
     if (metadata.timestamp <= currentTime) {
       self.receiverStreamManager_.processMetadata(metadata.type, metadata.data, metadata.timestamp);
