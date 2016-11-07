@@ -240,7 +240,7 @@ Player.prototype.onProgress = function() {
   for (var i = 0; i < this.metadata_.length; i++) {
     var metadata = this.metadata_[i];
     if (metadata.timestamp <= currentTime) {
-      self.receiverStreamManager_.processMetadata(metadata.type, metadata.data, metadata.timestamp);
+      this.receiverStreamManager_.processMetadata(metadata.type, metadata.data, metadata.timestamp);
       this.metadata_.splice(i, 1);
       console.log("Processing metadata:");
       console.log(metadata);
