@@ -16,7 +16,7 @@ var Player = function(mediaElement) {
   this.adIsPlaying_ = false;
   this.metadata_ = [];
   this.mediaElement_ = mediaElement;
-  this.mediaElement_.ontimeupdate = this.onTimeUpdate.bind(this);
+  //this.mediaElement_.ontimeupdate = this.onTimeUpdate.bind(this);
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
@@ -53,8 +53,8 @@ var Player = function(mediaElement) {
 
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
-  this.mediaManager_.onSeek = this.onSeek.bind(this);
-  this.initReceiverStreamManager_();
+  //this.mediaManager_.onSeek = this.onSeek.bind(this);
+  //this.initReceiverStreamManager_();
 };
 
 /**
@@ -246,7 +246,8 @@ Player.prototype.onLoad = function(event) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
   }
-  this.receiverStreamManager_.requestStream(this.streamRequest);
+  //this.receiverStreamManager_.requestStream(this.streamRequest);
+  this.onStreamDataReceived('');
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -287,20 +288,20 @@ Player.prototype.onSeek = function(event) {
 Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
-    'url': url,
+    'url': 'https://dai.google.com/ondemand/hls/content/19463/vid/googleio-highlights/CHS/streams/9408eb9f-f490-4e4b-bf73-e1a3607b2208/media/f926fe0e30f2bf2c348e5b8183b6f09e.m3u8',//url,
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
     self.metadata_.push({type: type, data: data, timestamp: timestamp});
   };
-  var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
+  var currentTime = 0;//this.startTime_ > 0 ? this.receiverStreamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
-  if (this.subtitles[0].ttml) {
+  if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
   }
 };
