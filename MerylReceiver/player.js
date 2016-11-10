@@ -296,7 +296,7 @@ Player.prototype.onStreamDataReceived = function(url) {
     self.metadata_.push({type: type, data: data, timestamp: timestamp});
   };
   var currentTime = 0;//this.startTime_ > 0 ? this.receiverStreamManager_
-    .streamTimeForContentTime(this.startTime_) : 0;
+    //.streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
