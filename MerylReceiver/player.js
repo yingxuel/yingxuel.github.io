@@ -63,11 +63,11 @@ var Player = function(mediaElement) {
 Player.prototype.initReceiverStreamManager_ = function() {
   var self = this;
   this.receiverStreamManager_ =
-      new google.ima.cast.api.ReceiverStreamManager(this.mediaElement_);
+      new google.ima.dai.api.ReceiverStreamManager(this.mediaElement_);
   var onStreamDataReceived = this.onStreamDataReceived.bind(this);
   var sendPingForTesting = this.sendPingForTesting_.bind(this);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.LOADED,
+      google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
         var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
@@ -87,46 +87,46 @@ Player.prototype.initReceiverStreamManager_ = function() {
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.ERROR,
+      google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
         self.broadcast_(event.getStreamData().errorMessage);
         console.log("Error: " + event.getStreamData().errorMessage);
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.CUEPOINTS_CHANGED,
+      google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
         console.log("Cuepoints changed: ");
         console.log(event.getStreamData());
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.STARTED,
+      google.ima.dai.api.StreamEvent.Type.STARTED,
       function(event) {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.FIRST_QUARTILE,
+      google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE,
       function(event) {
         sendPingForTesting('first', self.adNum_);
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.MIDPOINT,
+      google.ima.dai.api.StreamEvent.Type.MIDPOINT,
       function(event) {
         sendPingForTesting('mid', self.adNum_);
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.THIRD_QUARTILE,
+      google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
       function(event) {
         sendPingForTesting('third', self.adNum_);
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.COMPLETE,
+      google.ima.dai.api.StreamEvent.Type.COMPLETE,
       function(event) {
         self.broadcast_('complete');
         sendPingForTesting('complete', self.adNum_);
@@ -134,7 +134,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.AD_BREAK_STARTED,
+      google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
       function(event) {
         self.adIsPlaying_ = true;
         document.getElementById('ad-ui').style.display = 'block';
@@ -142,7 +142,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.AD_BREAK_ENDED,
+      google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
       function(event) {
         self.adIsPlaying_ = false;
         document.getElementById('ad-ui').style.display = 'none'; 
@@ -154,7 +154,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       },
       false);
   this.receiverStreamManager_.addEventListener(
-      google.ima.cast.api.StreamEvent.Type.AD_PROGRESS,
+      google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
         var adData = self.receiverStreamManager_.getCurrentAdData();
         console.log(adData);
