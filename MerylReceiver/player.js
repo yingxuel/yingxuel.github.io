@@ -41,6 +41,10 @@ var Player = function(mediaElement) {
         var time = parseFloat(message[1]);
         self.snapback_(time);
         break;
+      case 'getContentTime':
+        var contentTime = self.getContentTime_();
+        self.broadcast_('contentTime,' + contentTime);
+        break;
       default:
         self.broadcast_('Message not recognized');
         break;
@@ -49,10 +53,13 @@ var Player = function(mediaElement) {
 
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
+  this.mediaManager_.onSeek = this.onSeek.bind(this);
   this.initReceiverStreamManager_();
 };
 
-
+/**
+ * Initializes receiver stream manager and adds callbacks.
+ */
 Player.prototype.initReceiverStreamManager_ = function() {
   var self = this;
   this.receiverStreamManager_ =
@@ -164,6 +171,23 @@ Player.prototype.initReceiverStreamManager_ = function() {
 };
 
 
+/**
+ * Gets content time for the stream.
+ * @returns {number} The content time.
+ * @private
+ */
+Player.prototype.getContentTime_ = function() {
+  return this.receiverStreamManager_
+      .contentTimeForStreamTime(this.mediaElement_.currentTime);
+};
+
+
+/**
+ * Sends event ping for testing.
+ * @param {!string} event Event pinged.
+ * @param {number} number The ad number.
+ * @private
+ */
 Player.prototype.sendPingForTesting_ = function(event, number) {
   var testingPing = 'http://www.example.com/' + event + '@?num='
       + number + 'ld';
@@ -215,20 +239,15 @@ Player.prototype.onSenderDisconnected = function(event) {
 Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
-  console.log(imaRequestData);
   if (imaRequestData.assetKey) {
-    this.streamRequest = new google.ima.cast.api.LiveStreamRequest(imaRequestData);
+    this.streamRequest =
+      new google.ima.dai.api.LiveStreamRequest(imaRequestData);
   } else if (imaRequestData.contentSourceId) {
-    this.streamRequest = new google.ima.cast.api.VODStreamRequest(imaRequestData);
+    this.streamRequest =
+      new google.ima.dai.api.VODStreamRequest(imaRequestData);
   }
   this.receiverStreamManager_.requestStream(this.streamRequest);
-  /*var host = new cast.player.api.Host({
-    'url': 'https://dai.google.com/ondemand/hls/content/19823/vid/ima-test/CHS/streams/436ef975-de92-4fa4-b8e1-80e813e70252/master.m3u8',
-    'mediaElement': this.mediaElement_
-  });
-  this.castPlayer_ = new cast.player.api.Player(host);
-  this.castPlayer_.load(
-    cast.player.api.CreateHlsStreamingProtocol(host));*/
+  document.getElementById('splash').style.display = 'none';
 };
 
 
@@ -250,6 +269,18 @@ Player.prototype.onTimeUpdate = function() {
 
 
 /**
+ * Processes the SEEK event from the sender.
+ * @param {!cast.receiver.MediaManager.Event} event The seek event.
+ * @this {Player}
+ */
+Player.prototype.onSeek = function(event) {
+  var currentTime = event.data.currentTime;
+  this.snapback_(currentTime);
+  this.mediaManager_.broadcastStatus(true, event.data.requestId);
+};
+
+
+/**
  * Loads stitched ads+content stream.
  * @param {!string} url of the stream.
  */
@@ -261,10 +292,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
-    console.log('metadata: ');
-    console.log(data);
     self.metadata_.push({type: type, data: data, timestamp: timestamp});
-    //self.receiverStreamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
@@ -272,13 +300,14 @@ Player.prototype.onStreamDataReceived = function(url) {
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
-  console.log(this.castPlayer_);
-  //this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
+  if (this.subtitles[0].ttml) {
+    this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
+  }
 };
 
 /**
  * Bookmarks content so stream will return to this location if revisited.
- * @param {number} time The time stream will return to in seconds.
+ * @private
  */
 Player.prototype.bookmark_ = function() {
   this.broadcast_('Current Time: ' + this.mediaElement_.currentTime);
@@ -290,6 +319,7 @@ Player.prototype.bookmark_ = function() {
 /**
  * Seeks player to location.
  * @param {number} time The time to seek to in seconds.
+ * @private
  */
 Player.prototype.seek_ = function(time) {
   if (this.adIsPlaying_) {
@@ -303,6 +333,7 @@ Player.prototype.seek_ = function(time) {
  * Seeks player to location and plays last ad break if it has not been
  * seen already.
  * @param {number} time The time to seek to in seconds.
+ * @private
  */
 Player.prototype.snapback_ = function(time) {
   var previousCuepoint = 
@@ -312,6 +343,8 @@ Player.prototype.snapback_ = function(time) {
   if (played) {
     this.seek_(time);
   } else {
+    // Adding 0.1 to cuepoint start time because of bug where stream freezes
+    // when seeking to certain times in VOD streams.
     this.seek_(previousCuepoint.start + 0.1);
     this.seekToTimeAfterAdBreak_ = time;
   }
