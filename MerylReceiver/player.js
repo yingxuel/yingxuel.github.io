@@ -4,12 +4,14 @@
  * Entry point for the sample video player which uses media element for
  * rendering video streams.
  *
+ * @this {Player}
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
 var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
   this.adNum_ = 1;
+  this.breakNum_ = 1;
   this.castPlayer_ = null;
   this.seekToTimeAfterAdBreak_ = 0;
   this.startTime_ = 0;
@@ -59,6 +61,7 @@ var Player = function(mediaElement) {
 
 /**
  * Initializes receiver stream manager and adds callbacks.
+ * @private
  */
 Player.prototype.initReceiverStreamManager_ = function() {
   var self = this;
@@ -89,8 +92,13 @@ Player.prototype.initReceiverStreamManager_ = function() {
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
-        self.broadcast_(event.getStreamData().errorMessage);
-        console.log("Error: " + event.getStreamData().errorMessage);
+        var errorMessage = event.getStreamData().errorMessage;
+        if (errorMessage.indexOf('401') !== -1) {
+          self.sendPingForTesting_('error?code=401');
+        } else if (errorMessage.indexOf('404') !== -1) {
+          self.sendPingForTesting_('error?code=404');
+        }
+        self.broadcast_(errorMessage);
       },
       false);
   this.receiverStreamManager_.addEventListener(
@@ -138,8 +146,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         self.adIsPlaying_ = true;
         document.getElementById('ad-ui').style.display = 'block';
-        sendPingForTesting('http://www.example.com/adBreakStarted\?num='
-          + self.breakNum_);
+        sendPingForTesting('adBreakStarted\?num=' + self.breakNum_);
         self.broadcast_('ad_break_started');
       },
       false);
@@ -148,8 +155,8 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         self.adIsPlaying_ = false;
         document.getElementById('ad-ui').style.display = 'none';
-        sendPingForTesting('http://www.example.com/adBreakEnded\?num='
-          + self.breakNum_);
+        sendPingForTesting('adBreakEnded\?num=' + self.breakNum_);
+        self.breakNum_++;
         self.broadcast_('ad_break_ended');
         if (self.seekToTimeAfterAdBreak_ > 0) {
           self.seek_(self.seekToTimeAfterAdBreak_);
@@ -235,6 +242,7 @@ Player.prototype.onSenderDisconnected = function(event) {
     this.receiverManager_.stop();
   }
 };
+
 
 /**
  * Called when we receive a LOAD message from the sender.
@@ -340,7 +348,7 @@ Player.prototype.seek_ = function(time) {
  * @private
  */
 Player.prototype.snapback_ = function(time) {
-  var previousCuepoint = 
+  var previousCuepoint =
     this.receiverStreamManager_.previousCuePointForStreamTime(time);
   console.log(previousCuepoint);
   var played = previousCuepoint.played;
