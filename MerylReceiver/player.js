@@ -93,12 +93,9 @@ Player.prototype.initReceiverStreamManager_ = function() {
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
         var errorMessage = event.getStreamData().errorMessage;
-        if (errorMessage.indexOf('401') !== -1) {
-          self.sendPingForTesting_('error?code=401');
-        } else if (errorMessage.indexOf('404') !== -1) {
-          self.sendPingForTesting_('error?code=404');
-        }
         self.broadcast_(errorMessage);
+        var errorCode = /4\d{2}/.exec(errorMessage)[0];
+        self.sendPingForTesting_('error?code=' + errorCode);
       },
       false);
   this.receiverStreamManager_.addEventListener(
