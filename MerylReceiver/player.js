@@ -197,8 +197,10 @@ Player.prototype.getContentTime_ = function() {
  * @private
  */
 Player.prototype.sendPingForTesting_ = function(event, number) {
-  var testingPing = 'http://www.example.com/' + event + '@?num='
-      + number + 'ld';
+  var testingPing = 'http://www.example.com/' + event;
+  if (number) {
+    testingPing += '@?num=' + number + 'ld';
+  }
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open('GET', testingPing, true);
   xmlhttp.send();
