@@ -95,7 +95,8 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         var errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
-        var errorCode = /4\d{2}/.exec(errorMessage)[0];
+        //var errorCode = /4\d{2}/.exec(errorMessage)[0];
+        var errorCode = event.getStreamData().errorCode;
         self.sendPingForTesting_('error?code=' + errorCode);
         console.log(event);
       },
@@ -112,7 +113,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
-        console.log(event);
+        console.log(event.getAdData());
       },
       false);
   this.receiverStreamManager_.addEventListener(
