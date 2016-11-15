@@ -72,6 +72,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
+        console.log(event);
         var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
@@ -87,7 +88,6 @@ Player.prototype.initReceiverStreamManager_ = function() {
         mediaInfo.contentId = streamUrl;
         mediaInfo.contentType = 'application/x-mpegurl';
         onStreamDataReceived(streamUrl);
-        console.log(event);
       },
       false);
   this.receiverStreamManager_.addEventListener(
