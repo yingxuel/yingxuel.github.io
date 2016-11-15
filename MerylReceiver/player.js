@@ -87,6 +87,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         mediaInfo.contentId = streamUrl;
         mediaInfo.contentType = 'application/x-mpegurl';
         onStreamDataReceived(streamUrl);
+        console.log(event);
       },
       false);
   this.receiverStreamManager_.addEventListener(
@@ -96,6 +97,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         self.broadcast_(errorMessage);
         var errorCode = /4\d{2}/.exec(errorMessage)[0];
         self.sendPingForTesting_('error?code=' + errorCode);
+        console.log(event);
       },
       false);
   this.receiverStreamManager_.addEventListener(
@@ -110,6 +112,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
+        console.log(event);
       },
       false);
   this.receiverStreamManager_.addEventListener(
@@ -164,6 +167,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
+        console.log(event);
         var adData = self.receiverStreamManager_.getCurrentAdData();
         console.log(adData);
         document.getElementById('ad-position').innerHTML
