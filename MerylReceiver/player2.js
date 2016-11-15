@@ -168,7 +168,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
         console.log(event);
-        var adData = self.receiverStreamManager_.getCurrentAdData();
+        var adData = event.getStreamData().adProgressData;
         console.log(adData);
         document.getElementById('ad-position').innerHTML
           = adData.adPosition;
@@ -364,3 +364,4 @@ Player.prototype.snapback_ = function(time) {
     this.seekToTimeAfterAdBreak_ = time;
   }
 };
+f
