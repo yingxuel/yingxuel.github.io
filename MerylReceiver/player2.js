@@ -168,8 +168,8 @@ Player.prototype.initReceiverStreamManager_ = function() {
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
-        console.log(event);
         var adData = event.getStreamData().adProgressData;
+        console.log('ad progress:');
         console.log(adData);
         document.getElementById('ad-position').innerHTML
           = adData.adPosition;
