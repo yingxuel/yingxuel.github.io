@@ -95,8 +95,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       function(event) {
         var errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
-        //var errorCode = /4\d{2}/.exec(errorMessage)[0];
-        var errorCode = event.getStreamData().errorCode;
+        var errorCode = /4\d{2}/.exec(errorMessage)[0];
         self.sendPingForTesting_('error?code=' + errorCode);
         console.log(event);
       },
