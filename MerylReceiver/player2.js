@@ -364,4 +364,3 @@ Player.prototype.snapback_ = function(time) {
     this.seekToTimeAfterAdBreak_ = time;
   }
 };
-f
