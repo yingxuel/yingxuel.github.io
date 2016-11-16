@@ -114,8 +114,8 @@ Player.prototype.initReceiverStreamManager_ = function() {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
         console.log('start receiver');
-        console.log(event.getAdData());
-        console.log('ad id = ' + event.getAdData().getAdId());
+        console.log(event.getAd());
+        console.log('ad id = ' + event.getAd().getAdId());
       },
       false);
   this.receiverStreamManager_.addEventListener(
