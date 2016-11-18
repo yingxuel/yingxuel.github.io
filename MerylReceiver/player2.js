@@ -110,7 +110,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
       google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
         console.log("Cuepoints changed: ");
-        console.log(event);
+        console.log(event.getStreamData());
       },
       false);
   this.receiverStreamManager_.addEventListener(
