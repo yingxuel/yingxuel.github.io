@@ -90,6 +90,11 @@ Player.prototype.initReceiverStreamManager_ = function() {
         onStreamDataReceived(streamUrl);
       },
       false);
+  google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
+      function(event) {
+        self.sendPingForTesting_('streamInit', self.adNum_);
+      },
+      false);
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
