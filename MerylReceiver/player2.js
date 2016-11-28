@@ -16,7 +16,6 @@ var Player = function(mediaElement) {
   this.seekToTimeAfterAdBreak_ = 0;
   this.startTime_ = 0;
   this.adIsPlaying_ = false;
-  this.metadata_ = [];
   this.mediaElement_ = mediaElement;
   this.mediaElement_.ontimeupdate = this.onTimeUpdate.bind(this);
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
@@ -72,7 +71,6 @@ Player.prototype.initReceiverStreamManager_ = function() {
   this.receiverStreamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
-        console.log(event.getStreamData());
         var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
@@ -84,9 +82,6 @@ Player.prototype.initReceiverStreamManager_ = function() {
         //   "language": "fr"
         // }
         self.subtitles = event.getStreamData().subtitles;
-        var mediaInfo = {};
-        mediaInfo.contentId = streamUrl;
-        mediaInfo.contentType = 'application/x-mpegurl';
         onStreamDataReceived(streamUrl);
       },
       false);
@@ -119,7 +114,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
         //console.log('start receiver');
-        //console.log(event.getAd());
+        console.log(event.getAd());
         //console.log('ad id = ' + event.getAd().getAdId());
       },
       false);
@@ -273,23 +268,6 @@ Player.prototype.onLoad = function(event) {
 
 
 /**
- * Called when the video time is updated.
- */
-Player.prototype.onTimeUpdate = function() {
-  var currentTime = this.mediaElement_.currentTime;
-  for (var i = 0; i < this.metadata_.length; i++) {
-    var metadata = this.metadata_[i];
-    if (metadata.timestamp <= currentTime) {
-      this.receiverStreamManager_.processMetadata(metadata.type, metadata.data);
-      this.metadata_.splice(i, 1);
-      console.log('Processing metadata: ' + currentTime);
-      console.log(metadata);
-    }
-  }
-};
-
-
-/**
  * Processes the SEEK event from the sender.
  * @param {!cast.receiver.MediaManager.Event} event The seek event.
  * @this {Player}
@@ -313,7 +291,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
-    self.metadata_.push({type: type, data: data, timestamp: timestamp});
+    self.receiverStreamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
