@@ -64,11 +64,11 @@ var Player = function(mediaElement) {
 Player.prototype.initStreamManager_ = function() {
   var self = this;
   this.streamManager_ =
-      new google.ima.dai.StreamManager(this.mediaElement_);
+      new google.ima.dai.api.StreamManager(this.mediaElement_);
   var onStreamDataReceived = this.onStreamDataReceived.bind(this);
   var sendPingForTesting = this.sendPingForTesting_.bind(this);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.LOADED,
+      google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
         var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
@@ -85,13 +85,13 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.STREAM_INITIALIZED,
+      google.ima.dai.api.StreamEvent.Type.STREAM_INITIALIZED,
       function(event) {
         self.sendPingForTesting_('streamInit', self.adNum_);
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.ERROR,
+      google.ima.dai.api.StreamEvent.Type.ERROR,
       function(event) {
         var errorMessage = event.getStreamData().errorMessage;
         self.broadcast_(errorMessage);
@@ -101,14 +101,14 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.CUEPOINTS_CHANGED,
+      google.ima.dai.api.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
         console.log("Cuepoints changed: ");
         console.log(event.getStreamData());
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.STARTED,
+      google.ima.dai.api.StreamEvent.Type.STARTED,
       function(event) {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
@@ -118,25 +118,25 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.FIRST_QUARTILE,
+      google.ima.dai.api.StreamEvent.Type.FIRST_QUARTILE,
       function(event) {
         sendPingForTesting('first', self.adNum_);
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.MIDPOINT,
+      google.ima.dai.api.StreamEvent.Type.MIDPOINT,
       function(event) {
         sendPingForTesting('mid', self.adNum_);
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.THIRD_QUARTILE,
+      google.ima.dai.api.StreamEvent.Type.THIRD_QUARTILE,
       function(event) {
         sendPingForTesting('third', self.adNum_);
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.COMPLETE,
+      google.ima.dai.api.StreamEvent.Type.COMPLETE,
       function(event) {
         self.broadcast_('complete');
         sendPingForTesting('complete', self.adNum_);
@@ -144,7 +144,7 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.AD_BREAK_STARTED,
+      google.ima.dai.api.StreamEvent.Type.AD_BREAK_STARTED,
       function(event) {
         self.adIsPlaying_ = true;
         document.getElementById('ad-ui').style.display = 'block';
@@ -153,7 +153,7 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.AD_BREAK_ENDED,
+      google.ima.dai.api.StreamEvent.Type.AD_BREAK_ENDED,
       function(event) {
         self.adIsPlaying_ = false;
         document.getElementById('ad-ui').style.display = 'none';
@@ -167,7 +167,7 @@ Player.prototype.initStreamManager_ = function() {
       },
       false);
   this.streamManager_.addEventListener(
-      google.ima.dai.StreamEvent.Type.AD_PROGRESS,
+      google.ima.dai.api.StreamEvent.Type.AD_PROGRESS,
       function(event) {
         var adData = event.getStreamData().adProgressData;
         document.getElementById('ad-position').innerHTML
@@ -256,10 +256,10 @@ Player.prototype.onLoad = function(event) {
   this.startTime_ = imaRequestData.startTime;
   if (imaRequestData.assetKey) {
     this.streamRequest =
-      new google.ima.dai.LiveStreamRequest(imaRequestData);
+      new google.ima.dai.api.LiveStreamRequest(imaRequestData);
   } else if (imaRequestData.contentSourceId) {
     this.streamRequest =
-      new google.ima.dai.VODStreamRequest(imaRequestData);
+      new google.ima.dai.api.VODStreamRequest(imaRequestData);
   }
   this.streamManager_.requestStream(this.streamRequest);
   document.getElementById('splash').style.display = 'none';
