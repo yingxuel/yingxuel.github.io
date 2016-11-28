@@ -17,7 +17,6 @@ var Player = function(mediaElement) {
   this.startTime_ = 0;
   this.adIsPlaying_ = false;
   this.mediaElement_ = mediaElement;
-  this.mediaElement_.ontimeupdate = this.onTimeUpdate.bind(this);
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
