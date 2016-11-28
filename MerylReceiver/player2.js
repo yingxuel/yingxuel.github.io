@@ -112,9 +112,12 @@ Player.prototype.initStreamManager_ = function() {
       function(event) {
         self.broadcast_('started');
         sendPingForTesting('start', self.adNum_);
-        //console.log('start receiver');
-        console.log(event.getAd());
-        //console.log('ad id = ' + event.getAd().getAdId());
+        var ad = e.getAd();
+        var adPodInfo = ad ? ad.getAdPodInfo() : null;
+        var title = ad ? ad.getTitle() : '<no-title>';
+        var position = adPodInfo ? adPodInfo.getAdPosition() : 0;
+        console.log('Ad Title: ' + title);
+        console.log('Ad Position: ' + position);
       },
       false);
   this.streamManager_.addEventListener(
