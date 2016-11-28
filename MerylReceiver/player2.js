@@ -54,20 +54,20 @@ var Player = function(mediaElement) {
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
   this.mediaManager_.onSeek = this.onSeek.bind(this);
-  this.initReceiverStreamManager_();
+  this.initStreamManager_();
 };
 
 /**
  * Initializes receiver stream manager and adds callbacks.
  * @private
  */
-Player.prototype.initReceiverStreamManager_ = function() {
+Player.prototype.initStreamManager_ = function() {
   var self = this;
-  this.receiverStreamManager_ =
-      new google.ima.dai.ReceiverStreamManager(this.mediaElement_);
+  this.streamManager_ =
+      new google.ima.dai.StreamManager(this.mediaElement_);
   var onStreamDataReceived = this.onStreamDataReceived.bind(this);
   var sendPingForTesting = this.sendPingForTesting_.bind(this);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.LOADED,
       function(event) {
         var streamUrl = event.getStreamData().url;
@@ -84,13 +84,13 @@ Player.prototype.initReceiverStreamManager_ = function() {
         onStreamDataReceived(streamUrl);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.STREAM_INITIALIZED,
       function(event) {
         self.sendPingForTesting_('streamInit', self.adNum_);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.ERROR,
       function(event) {
         var errorMessage = event.getStreamData().errorMessage;
@@ -100,14 +100,14 @@ Player.prototype.initReceiverStreamManager_ = function() {
         console.log(event);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.CUEPOINTS_CHANGED,
       function(event) {
         console.log("Cuepoints changed: ");
         console.log(event.getStreamData());
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.STARTED,
       function(event) {
         self.broadcast_('started');
@@ -117,25 +117,25 @@ Player.prototype.initReceiverStreamManager_ = function() {
         //console.log('ad id = ' + event.getAd().getAdId());
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.FIRST_QUARTILE,
       function(event) {
         sendPingForTesting('first', self.adNum_);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.MIDPOINT,
       function(event) {
         sendPingForTesting('mid', self.adNum_);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.THIRD_QUARTILE,
       function(event) {
         sendPingForTesting('third', self.adNum_);
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.COMPLETE,
       function(event) {
         self.broadcast_('complete');
@@ -143,7 +143,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         self.adNum_++;
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.AD_BREAK_STARTED,
       function(event) {
         self.adIsPlaying_ = true;
@@ -152,7 +152,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         self.broadcast_('ad_break_started');
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.AD_BREAK_ENDED,
       function(event) {
         self.adIsPlaying_ = false;
@@ -166,7 +166,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
         }
       },
       false);
-  this.receiverStreamManager_.addEventListener(
+  this.streamManager_.addEventListener(
       google.ima.dai.StreamEvent.Type.AD_PROGRESS,
       function(event) {
         var adData = event.getStreamData().adProgressData;
@@ -189,7 +189,7 @@ Player.prototype.initReceiverStreamManager_ = function() {
  * @private
  */
 Player.prototype.getContentTime_ = function() {
-  return this.receiverStreamManager_
+  return this.streamManager_
       .contentTimeForStreamTime(this.mediaElement_.currentTime);
 };
 
@@ -261,7 +261,7 @@ Player.prototype.onLoad = function(event) {
     this.streamRequest =
       new google.ima.dai.VODStreamRequest(imaRequestData);
   }
-  this.receiverStreamManager_.requestStream(this.streamRequest);
+  this.streamManager_.requestStream(this.streamRequest);
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -290,9 +290,9 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
-    self.receiverStreamManager_.processMetadata(type, data, timestamp);
+    self.StreamManager_.processMetadata(type, data, timestamp);
   };
-  var currentTime = this.startTime_ > 0 ? this.receiverStreamManager_
+  var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
   this.castPlayer_ = new cast.player.api.Player(host);
@@ -309,7 +309,7 @@ Player.prototype.onStreamDataReceived = function(url) {
  */
 Player.prototype.bookmark_ = function() {
   this.broadcast_('Current Time: ' + this.mediaElement_.currentTime);
-  var bookmarkTime = this.receiverStreamManager_
+  var bookmarkTime = this.streamManager_
     .contentTimeForStreamTime(this.mediaElement_.currentTime);
   this.broadcast_('bookmark,' + bookmarkTime);
 };
@@ -335,7 +335,7 @@ Player.prototype.seek_ = function(time) {
  */
 Player.prototype.snapback_ = function(time) {
   var previousCuepoint =
-    this.receiverStreamManager_.previousCuePointForStreamTime(time);
+    this.streamManager_.previousCuePointForStreamTime(time);
   console.log(previousCuepoint);
   var played = previousCuepoint.played;
   if (played) {
