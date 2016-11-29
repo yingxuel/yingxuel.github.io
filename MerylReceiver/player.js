@@ -293,7 +293,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
-    self.StreamManager_.processMetadata(type, data, timestamp);
+    self.streamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
