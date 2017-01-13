@@ -54,7 +54,7 @@ var Player = function(mediaElement) {
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
   this.mediaManager_.onSeek = this.onSeek.bind(this);
-  //this.initStreamManager_();
+  this.initStreamManager_();
 };
 
 /**
@@ -257,15 +257,14 @@ Player.prototype.onSenderDisconnected = function(event) {
 Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
-  this.onStreamDataReceived(imaRequestData.assetKey);
-  /*if (imaRequestData.assetKey) {
+  if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
   } else if (imaRequestData.contentSourceId) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
   }
-  this.streamManager_.requestStream(this.streamRequest);*/
+  this.streamManager_.requestStream(this.streamRequest);
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -293,15 +292,15 @@ Player.prototype.onStreamDataReceived = function(url) {
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
-  /*host.processMetadata = function(type, data, timestamp) {
+  host.processMetadata = function(type, data, timestamp) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
-  this.broadcast_('start time: ' + currentTime);*/
+  this.broadcast_('start time: ' + currentTime);
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
-    cast.player.api.CreateHlsStreamingProtocol(host), 0);
+    cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
   if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
   }
