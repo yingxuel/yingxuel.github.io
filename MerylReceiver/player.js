@@ -10,7 +10,6 @@
 var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
-  this.streamUrl_ = '';
   this.adNum_ = 1;
   this.breakNum_ = 1;
   this.castPlayer_ = null;
@@ -55,7 +54,7 @@ var Player = function(mediaElement) {
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
   this.mediaManager_.onSeek = this.onSeek.bind(this);
-  this.initStreamManager_();
+  //this.initStreamManager_();
 };
 
 /**
@@ -71,7 +70,7 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
-        //var streamUrl = event.getStreamData().url;
+        var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
         // {
@@ -82,7 +81,7 @@ Player.prototype.initStreamManager_ = function() {
         //   "language": "fr"
         // }
         self.subtitles = event.getStreamData().subtitles;
-        onStreamDataReceived(self.streamUrl_);
+        onStreamDataReceived(streamUrl);
       },
       false);
   this.streamManager_.addEventListener(
@@ -258,15 +257,15 @@ Player.prototype.onSenderDisconnected = function(event) {
 Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
-  this.streamUrl_ = imaRequestData.assetKey;
-  if (imaRequestData.assetKey) {
+  this.onStreamDataReceived(imaRequestData.assetKey);
+  /*if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
   } else if (imaRequestData.contentSourceId) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
   }
-  this.streamManager_.requestStream(this.streamRequest);
+  this.streamManager_.requestStream(this.streamRequest);*/
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -294,15 +293,15 @@ Player.prototype.onStreamDataReceived = function(url) {
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
-  host.processMetadata = function(type, data, timestamp) {
+  /*host.processMetadata = function(type, data, timestamp) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
-  this.broadcast_('start time: ' + currentTime);
+  this.broadcast_('start time: ' + currentTime);*/
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
-    cast.player.api.CreateHlsStreamingProtocol(host), currentTime);
+    cast.player.api.CreateHlsStreamingProtocol(host), 0);
   if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
   }
