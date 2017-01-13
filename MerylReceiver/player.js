@@ -10,6 +10,7 @@
 var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
+  this.streamUrl_ = '';
   this.adNum_ = 1;
   this.breakNum_ = 1;
   this.castPlayer_ = null;
@@ -70,7 +71,7 @@ Player.prototype.initStreamManager_ = function() {
   this.streamManager_.addEventListener(
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
-        var streamUrl = event.getStreamData().url;
+        //var streamUrl = event.getStreamData().url;
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
         // {
@@ -81,7 +82,7 @@ Player.prototype.initStreamManager_ = function() {
         //   "language": "fr"
         // }
         self.subtitles = event.getStreamData().subtitles;
-        onStreamDataReceived(streamUrl);
+        onStreamDataReceived(self.streamUrl_);
       },
       false);
   this.streamManager_.addEventListener(
@@ -257,6 +258,7 @@ Player.prototype.onSenderDisconnected = function(event) {
 Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
+  this.streamUrl_ = imaRequestData.assetKey;
   if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
