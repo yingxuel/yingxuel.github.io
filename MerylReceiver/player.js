@@ -71,6 +71,7 @@ Player.prototype.initStreamManager_ = function() {
       google.ima.dai.api.StreamEvent.Type.LOADED,
       function(event) {
         var streamUrl = event.getStreamData().url;
+        console.log("Stream URL: " + streamUrl);
         // Each element in subtitles array is an object with url and language
         // properties. Example of a subtitles array with 2 elements:
         // {
