@@ -297,7 +297,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   host.processMetadata = function(type, data, timestamp) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
-  host.updateManifestRequestInfo = function(requestInfo) {
+  /*host.updateManifestRequestInfo = function(requestInfo) {
     console.log('update manifest: ' + requestInfo.url);
     console.log('credentials: ' + requestInfo.withCredentials);
     requestInfo.withCredentials = true;
@@ -310,7 +310,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   host.updateSegmentRequestInfoCallback = function(requestInfo) {
     console.log('update segment');
     requestInfo.withCredentials = true;
-  };
+  };*/
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
