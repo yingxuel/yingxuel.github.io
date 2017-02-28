@@ -264,6 +264,7 @@ Player.prototype.onLoad = function(event) {
   } else if (imaRequestData.contentSourceId) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
+      console.log(this.streamRequest);
   }
   this.streamManager_.requestStream(this.streamRequest);
   document.getElementById('splash').style.display = 'none';
