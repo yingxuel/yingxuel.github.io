@@ -298,7 +298,9 @@ Player.prototype.onStreamDataReceived = function(url) {
   };
   host.updateManifestRequestInfo = function(requestInfo) {
     console.log('update manifest: ' + requestInfo.url);
+    console.log('credentials: ' + requestInfo.withCredentials);
     requestInfo.withCredentials = true;
+    console.log('new credentials: ' + requestInfo.withCredentials);
   };
   host.updateLicenseRequestInfo = function(requestInfo) {
     console.log('update license');
