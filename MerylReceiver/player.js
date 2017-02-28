@@ -297,7 +297,7 @@ Player.prototype.onStreamDataReceived = function(url) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
   host.updateManifestRequestInfo = function(requestInfo) {
-    console.log('update manifest');
+    console.log('update manifest: ' + requestInfo.url);
     requestInfo.withCredentials = true;
   };
   host.updateLicenseRequestInfo = function(requestInfo) {
