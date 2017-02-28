@@ -296,6 +296,15 @@ Player.prototype.onStreamDataReceived = function(url) {
   host.processMetadata = function(type, data, timestamp) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
+  host.updateManifestRequestInfo = function(requestInfo) {
+    requestInfo.withCredentials = true;
+  };
+  host.updateLicenseRequestInfo = function(requestInfo) {
+    requestInfo.withCredentials = true;
+  };
+  host.updateSegmentRequestInfoCallback = function(requestInfo) {
+    requestInfo.withCredentials = true;
+  };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
