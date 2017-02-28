@@ -297,12 +297,15 @@ Player.prototype.onStreamDataReceived = function(url) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
   host.updateManifestRequestInfo = function(requestInfo) {
+    console.log('update manifest');
     requestInfo.withCredentials = true;
   };
   host.updateLicenseRequestInfo = function(requestInfo) {
+    console.log('update license');
     requestInfo.withCredentials = true;
   };
   host.updateSegmentRequestInfoCallback = function(requestInfo) {
+    console.log('update segment');
     requestInfo.withCredentials = true;
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
