@@ -54,7 +54,7 @@ var Player = function(mediaElement) {
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
   this.mediaManager_.onSeek = this.onSeek.bind(this);
-  this.initStreamManager_();
+  //this.initStreamManager_();
 };
 
 /**
@@ -266,7 +266,7 @@ Player.prototype.onLoad = function(event) {
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
       console.log(this.streamRequest);
   }
-  this.streamManager_.requestStream(this.streamRequest);
+  //this.streamManager_.requestStream(this.streamRequest);
   document.getElementById('splash').style.display = 'none';
 };
 
@@ -290,12 +290,13 @@ Player.prototype.onSeek = function(event) {
 Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
-    'url': url,
+    //'url': url,
+    'url': 'https://www.google.com/url?q=https%3A%2F%2Fcbsdaistg-vh.akamaihd.net%2Fi%2Ftemp_hd_gallery_video%2FCBS_Production_Outlet_VMS%2Fvideo_robot%2FCBS_Production_Entertainment%2F2017%2F02%2F19%2F880378435780%2FCBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_%2C1848000%2C548000%2C158000%2C2596000%2C1248000%2C298000%2C3596000%2C848000%2C.mp4.csmil%2Fmaster.m3u8%3Fhdnea%3Dst%3D1488379662~exp%3D1488383262~acl%3D%2Fi%2Ftemp_hd_gallery_video%2FCBS_Production_Outlet_VMS%2Fvideo_robot%2FCBS_Production_Entertainment%2F2017%2F02%2F19%2F880378435780%2FCBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_%2C1848000%2C548000%2C158000%2C2596000%2C1248000%2C298000%2C3596000%2C848000%2C.mp4.csmil%2F*~hmac%3D8da4d30ba8febaec344701a1f2a4d8fbe8979acef516c3be1d4608f8fef87482%26originpath%3D%2Fondemand%2Fhls%2Fcontent%2F6067%2Fvid%2FC1BDCF7F-2B9C-4F05-1009-53D6F0549AA3%2FCHS%2Fstreams%2F206f9545-bcec-48e4-9ef3-c8daf4d6c840%2Fmaster.m3u8&sa=D&sntz=1&usg=AFQjCNF5cL4cWCfc5OIfQuSGBVSKdaYC5w',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
-    self.streamManager_.processMetadata(type, data, timestamp);
+    //self.streamManager_.processMetadata(type, data, timestamp);
   };
   host.updateManifestRequestInfo = function(requestInfo) {
     if (requestInfo.url.indexOf("dai.google.com") != -1) {
