@@ -311,7 +311,7 @@ Player.prototype.onStreamDataReceived = function(url) {
     } else {
       requestInfo.withCredentials = true;
     }
-    console.log('update license: ' requestInfo.withCredentials);
+    console.log('update license: ' + requestInfo.withCredentials);
   };
   host.updateSegmentRequestInfoCallback = function(requestInfo) {
     if (requestInfo.url.indexOf("dai.google.com") != -1) {
