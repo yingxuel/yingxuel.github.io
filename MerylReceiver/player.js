@@ -298,32 +298,28 @@ Player.prototype.onStreamDataReceived = function(url) {
     self.streamManager_.processMetadata(type, data, timestamp);
   };
   host.updateManifestRequestInfo = function(requestInfo) {
-    console.log('update manifest: ' + requestInfo.url);
-    console.log('credentials: ' + requestInfo.withCredentials);
     if (requestInfo.url.indexOf("dai.google.com") != -1) {
       requestInfo.withCredentials = false;
     } else {
       requestInfo.withCredentials = true;
     }
-    console.log('new credentials: ' + requestInfo.withCredentials);
+    console.log('update manifest: ' + requestInfo.withCredentials);
   };
   host.updateLicenseRequestInfo = function(requestInfo) {
-    console.log('update license');
     if (requestInfo.url.indexOf("dai.google.com") != -1) {
       requestInfo.withCredentials = false;
     } else {
       requestInfo.withCredentials = true;
     }
-    requestInfo.withCredentials = true;
+    console.log('update license: ' requestInfo.withCredentials);
   };
   host.updateSegmentRequestInfoCallback = function(requestInfo) {
-    console.log('update segment');
     if (requestInfo.url.indexOf("dai.google.com") != -1) {
       requestInfo.withCredentials = false;
     } else {
       requestInfo.withCredentials = true;
     }
-    requestInfo.withCredentials = true;
+    console.log('update segment: ' + requestInfo.withCredentials);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
