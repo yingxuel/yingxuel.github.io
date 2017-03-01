@@ -291,7 +291,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
     //'url': url,
-    'url': 'https://dai.google.com/linear/hls/event/X-wKpYHASamHnIifPFOE1A/master.m3u8';
+    'url': 'https://dai.google.com/linear/hls/event/X-wKpYHASamHnIifPFOE1A/master.m3u8',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
