@@ -314,27 +314,27 @@ Player.prototype.onStreamDataReceived = function(url) {
     }
   };
   host.updateManifestRequestInfo = function(requestInfo) {
-    if (requestInfo.url.indexOf("dai.google.com") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
+    //if (requestInfo.url.indexOf("dai.google.com") != -1) {
+      //requestInfo.withCredentials = false;
+    //} else {
       requestInfo.withCredentials = true;
-    }
+    //}
     console.log('update manifest: ' + requestInfo.withCredentials);
   };
   host.updateLicenseRequestInfo = function(requestInfo) {
-    if (requestInfo.url.indexOf("dai.google.com") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
+    //if (requestInfo.url.indexOf("dai.google.com") != -1) {
+      //requestInfo.withCredentials = false;
+    //} else {
       requestInfo.withCredentials = true;
-    }
+    //}
     console.log('update license: ' + requestInfo.withCredentials);
   };
   host.updateSegmentRequestInfoCallback = function(requestInfo) {
-    if (requestInfo.url.indexOf("dai.google.com") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
+    //if (requestInfo.url.indexOf("dai.google.com") != -1) {
+      //requestInfo.withCredentials = false;
+    //} else {
       requestInfo.withCredentials = true;
-    }
+    //}
     console.log('update segment: ' + requestInfo.withCredentials);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
