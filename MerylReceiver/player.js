@@ -314,6 +314,9 @@ Player.prototype.onStreamDataReceived = function(url) {
     }
   };
   host.updateManifestRequestInfo = function(requestInfo) {
+    if (!requestInfo.url) {
+      requestInfo.url = this.url;
+    }
     //if (requestInfo.url.indexOf("dai.google.com") != -1) {
       //requestInfo.withCredentials = false;
     //} else {
