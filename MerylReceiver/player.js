@@ -10,7 +10,7 @@
 var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
-  this.useSdk_ = false;
+  this.useSdk_ = true;
   this.adNum_ = 1;
   this.breakNum_ = 1;
   this.castPlayer_ = null;
@@ -303,8 +303,8 @@ Player.prototype.onSeek = function(event) {
 Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
-    //'url': url,
-    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488383423~exp=1488387023~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=158b07179e85a7bb4538d1a6bed1b7552bb30030615374821828d0a609638bf0&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/650357a8-59d4-4f18-aa39-f91da74c0ed8/master.m3u8',
+    'url': url,
+    //'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488383423~exp=1488387023~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=158b07179e85a7bb4538d1a6bed1b7552bb30030615374821828d0a609638bf0&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/650357a8-59d4-4f18-aa39-f91da74c0ed8/master.m3u8',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
