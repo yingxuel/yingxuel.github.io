@@ -46,6 +46,9 @@ var Player = function(mediaElement) {
         var contentTime = self.getContentTime_();
         self.broadcast_('contentTime,' + contentTime);
         break;
+      case 'requestStream':
+        self.requestStream_();
+        break;
       default:
         self.broadcast_('Message not recognized');
         break;
@@ -269,10 +272,15 @@ Player.prototype.onLoad = function(event) {
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
       console.log(this.streamRequest);
   }
+  document.getElementById('splash').style.display = 'none';
+};
+
+Player.prototype.requestStream = function() {
   if (this.useSdk_) {
     this.streamManager_.requestStream(this.streamRequest);
+  } else {
+    this.onStreamDataReceived('');
   }
-  document.getElementById('splash').style.display = 'none';
 };
 
 
