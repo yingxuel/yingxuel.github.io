@@ -304,7 +304,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
     //'url': url,
-    'url': 'https://cbsios-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488401742~exp=1488437742~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=458c9bad7da07295548752111323a4edd49c9bfb3752d1a695750d594d51336d&originpath=/cbs/vod/b0ce8e62-4e37-475e-a9e1-8981add0849d/manifest.m3u8',
+    'url': 'https://cbsios-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488402693~exp=1488438693~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=6a0fddd1c706dfb4b7e249a09247103aa98de59a9d18dd89e0c59146b09d9c74&originpath=/cbs/vod/c8b4aad8-366b-4ea5-8644-70f3f2af9aec/manifest.m3u8',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
