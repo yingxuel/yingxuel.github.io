@@ -10,7 +10,7 @@
 var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
-  this.useSdk_ = true;
+  this.useSdk_ = false;
   this.adNum_ = 1;
   this.breakNum_ = 1;
   this.castPlayer_ = null;
@@ -303,8 +303,8 @@ Player.prototype.onSeek = function(event) {
 Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
-    'url': url,
-    //'url': 'https://dai.google.com/linear/hls/event/X-wKpYHASamHnIifPFOE1A/master.m3u8',
+    //'url': url,
+    'url': 'http://cbs-vod.mdialog.com/video_assets/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/streams',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
