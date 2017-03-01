@@ -275,7 +275,7 @@ Player.prototype.onLoad = function(event) {
   document.getElementById('splash').style.display = 'none';
 };
 
-Player.prototype.requestStream = function() {
+Player.prototype.requestStream_ = function() {
   if (this.useSdk_) {
     this.streamManager_.requestStream(this.streamRequest);
   } else {
