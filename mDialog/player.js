@@ -596,7 +596,8 @@ sampleplayer.CastPlayer.prototype.load = function(info) {
 sampleplayer.CastPlayer.prototype.maybeSendLoadCompleted_ = function(info) {
 	if (!this.playerReady_) {
 		console.log('Deferring load response, player not ready');
-	} else if (!this.metadataLoaded_)console	thi.log_('Deferring load response, loadedmetadata event not received');
+	} else if (!this.metadataLoaded_) {
+		console.log('Deferring load response, loadedmetadata event not received');
 	} else {
 		this.onMetadataLoadedOrig_consoleo);
 	console.log('Sent load response, player is ready and metadata loaded');
