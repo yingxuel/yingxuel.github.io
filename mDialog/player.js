@@ -435,14 +435,14 @@ sampleplayer.CastPlayer.prototype.start = function() {
  * @export
  */
 sampleplayer.CastPlayer.prototype.preload = function(mediaInformation) {
-	this.log_('preload');
+	console.log('preload');
 	// For video formats that cannot be preloaded (mp4...), display preview UI.
 	if (sampleplayer.canDisplayPreview_(mediaInformation || {})) {
 		this.showPreviewMode_(mediaInformation);
 		return true;
 	}
 	if (!sampleplayer.supportsPreload_(mediaInformation || {})) {
-		this.log_('preload: no supportsPreload_');
+		console.log('preload: no supportsPreload_');
 		return false;
 	}
 	if (this.preloadPlayer_) {
@@ -454,7 +454,7 @@ sampleplayer.CastPlayer.prototype.preload = function(mediaInformation) {
 	if (couldPreload) {
 		this.showPreviewMode_(mediaInformation);
 	}
-	this.log_('preload: couldPreload=' + couldPreload);
+	console.log('preload: couldPreload=' + couldPreload);
 	return couldPreload;
 };
 /**
@@ -496,12 +496,12 @@ sampleplayer.CastPlayer.prototype.hidePreviewMode_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.preloadVideo_ = function(mediaInformation) {
-	this.log_('preloadVideo_');
+	console.log('preloadVideo_');
 	var self = this;
 	var url = mediaInformation.contentId;
 	var protocolFunc = sampleplayer.getProtocolFunction_(mediaInformation);
 	if (!protocolFunc) {
-		this.log_('No protocol found for preload');
+		console.log('No protocol found for preload');
 		return false;
 	}
 	var host = new cast.player.api.Host({
@@ -526,7 +526,7 @@ sampleplayer.CastPlayer.prototype.preloadVideo_ = function(mediaInformation) {
  * @export
  */
 sampleplayer.CastPlayer.prototype.load = function(info) {
-	this.log_('onLoad_');
+	console.log('onLoad_');
 	clearTimeout(this.idleTimerId_);
 	var self = this;
 	var media = info.message.media || {};
@@ -534,13 +534,13 @@ sampleplayer.CastPlayer.prototype.load = function(info) {
 	var playerType = sampleplayer.getType_(media);
 	var isLiveStream = media.streamType === cast.receiver.media.StreamType.LIVE;
 	if (!media.contentId) {
-		this.log_('Load failed: no content');
+		console.log('Load failed: no content');
 		self.onLoadMetadataError_(info);
 	} else if (playerType === sampleplayer.Type.UNKNOWN) {
-		this.log_('Load failed: unknown content type: ' + contentType);
+		console.log('Load failed: unknown content type: ' + contentType);
 		self.onLoadMetadataError_(info);
 	} else {
-		this.log_('Loading: ' + playerType);
+		console.log('Loading: ' + playerType);
 		self.resetMediaElement_();
 		self.setType_(playerType, isLiveStream);
 		var preloaded = false;
@@ -595,12 +595,11 @@ sampleplayer.CastPlayer.prototype.load = function(info) {
  */
 sampleplayer.CastPlayer.prototype.maybeSendLoadCompleted_ = function(info) {
 	if (!this.playerReady_) {
-		this.log_('Deferring load response, player not ready');
-	} else if (!this.metadataLoaded_) {
-		this.log_('Deferring load response, loadedmetadata event not received');
+		console.log('Deferring load response, player not ready');
+	} else if (!this.metadataLoaded_)console	thi.log_('Deferring load response, loadedmetadata event not received');
 	} else {
-		this.onMetadataLoadedOrig_(info);
-		this.log_('Sent load response, player is ready and metadata loaded');
+		this.onMetadataLoadedOrig_consoleo);
+	console.log('Sent load response, player is ready and metadata loaded');
 	}
 };
 /**
@@ -609,7 +608,7 @@ sampleplayer.CastPlayer.prototype.maybeSendLoadCompleted_ = function(info) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.resetMediaElement_ = function() {
-	this.log_('resetMediaElement_');
+	console.log('resetMediaElement_');
 	if (this.player_) {
 		this.player_.unload();
 		this.player_ = null;
@@ -623,7 +622,7 @@ sampleplayer.CastPlayer.prototype.resetMediaElement_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.loadMetadata_ = function(media) {
-	this.log_('loadMetadata_');
+	console.log('loadMetadata_');
 	if (!sampleplayer.isCastForAudioDevice_()) {
 		var metadata = media.metadata || {};
 		var titleElement = this.element_.querySelector('.media-title');
@@ -644,7 +643,7 @@ sampleplayer.CastPlayer.prototype.loadMetadata_ = function(media) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.loadPreviewModeMetadata_ = function(media) {
-	this.log_('loadPreviewModeMetadata_');
+	console.log('loadPreviewModeMetadata_');
 	if (!sampleplayer.isCastForAudioDevice_()) {
 		var metadata = media.metadata || {};
 		var titleElement = this.element_.querySelector('.preview-mode-title');
@@ -667,7 +666,7 @@ sampleplayer.CastPlayer.prototype.loadPreviewModeMetadata_ = function(media) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.letPlayerHandleAutoPlay_ = function(info) {
-	this.log_('letPlayerHandleAutoPlay_: ' + info.message.autoplay);
+	console.log('letPlayerHandleAutoPlay_: ' + info.message.autoplay);
 	var autoplay = info.message.autoplay;
 	info.message.autoplay = false;
 	this.mediaElement_.autoplay = false;
@@ -680,7 +679,7 @@ sampleplayer.CastPlayer.prototype.letPlayerHandleAutoPlay_ = function(info) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.loadAudio_ = function(info) {
-	this.log_('loadAudio_');
+	console.log('loadAudio_');
 	this.letPlayerHandleAutoPlay_(info);
 	this.loadDefault_(info);
 };
@@ -692,7 +691,7 @@ sampleplayer.CastPlayer.prototype.loadAudio_ = function(info) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
-	this.log_('loadVideo_');
+	console.log('loadVideo_');
 	var self = this;
 	var protocolFunc = null;
 	var url = info.message.media.contentId;
@@ -700,13 +699,13 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 	var wasPreloaded = false;
 	this.letPlayerHandleAutoPlay_(info);
 	if (!protocolFunc) {
-		this.log_('loadVideo_: using MediaElement');
+		console.log('loadVideo_: using MediaElement');
 		this.mediaElement_.addEventListener('stalled', this.bufferingHandler_,
 			false);
 		this.mediaElement_.addEventListener('waiting', this.bufferingHandler_,
 			false);
 	} else {
-		this.log_('loadVideo_: using Media Player Library');
+		console.log('loadVideo_: using Media Player Library');
 		// When MPL is used, buffering status should be detected by
 		// getState()['underflow]'
 		this.mediaElement_.removeEventListener('stalled', this.bufferingHandler_);
@@ -764,7 +763,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 				this.preloadPlayer_.unload();
 				this.preloadPlayer_ = null;
 			}
-			this.log_('Regular video load');
+			console.log('Regular video load');
 			// MD Cast SDK Integration
 			var host = new cast.player.api.Host({
 				'mediaElement': this.mediaElement_
@@ -833,7 +832,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 				console.log("### StreamManager: ClickThrough Started! " + JSON.stringify(clickThrough));
 			};
 		} else {
-			this.log_('Preloaded video load');
+			console.log('Preloaded video load');
 			this.player_ = this.preloadPlayer_;
 			this.preloadPlayer_ = null;
 			// Replace the "preload" error callback with the "load" error callback
@@ -893,7 +892,7 @@ sampleplayer.CastPlayer.prototype.readSideLoadedTextTrackType_ =
 				this.textTrackType_ =
 					sampleplayer.TextTrackType.SIDE_LOADED_VTT;
 			} else {
-				this.log_('Unsupported side loaded text track types');
+				console.log('Unsupported side loaded text track types');
 				this.textTrackType_ =
 					sampleplayer.TextTrackType.SIDE_LOADED_UNSUPPORTED;
 				break;
@@ -901,7 +900,7 @@ sampleplayer.CastPlayer.prototype.readSideLoadedTextTrackType_ =
 			// We do not support text tracks with different caption types for a single
 			// piece of content
 			if (oldTextTrackType && oldTextTrackType != this.textTrackType_) {
-				this.log_('Load has inconsistent text track types');
+				console.log('Load has inconsistent text track types');
 				this.textTrackType_ =
 					sampleplayer.TextTrackType.SIDE_LOADED_UNSUPPORTED;
 				break;
@@ -1136,7 +1135,7 @@ sampleplayer.CastPlayer.prototype.loadDefault_ = function(info) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
-	this.log_('setIdleTimeout_: ' + t);
+	console.log('setIdleTimeout_: ' + t);
 	var self = this;
 	clearTimeout(this.idleTimerId_);
 	if (t) {
@@ -1154,7 +1153,7 @@ sampleplayer.CastPlayer.prototype.setIdleTimeout_ = function(t) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.setType_ = function(type, isLiveStream) {
-	this.log_('setType_: ' + type);
+	console.log('setType_: ' + type);
 	this.type_ = type;
 	this.element_.setAttribute('type', type);
 	this.element_.setAttribute('live', isLiveStream.toString());
@@ -1182,7 +1181,7 @@ sampleplayer.CastPlayer.prototype.setType_ = function(type, isLiveStream) {
  */
 sampleplayer.CastPlayer.prototype.setState_ = function(
 	state, opt_crossfade, opt_delay) {
-	this.log_('setState_: state=' + state + ', crossfade=' + opt_crossfade +
+	console.log('setState_: state=' + state + ', crossfade=' + opt_crossfade +
 		', delay=' + opt_delay);
 	var self = this;
 	self.lastStateTransitionTime_ = Date.now();
@@ -1221,7 +1220,7 @@ sampleplayer.CastPlayer.prototype.setState_ = function(
  * @private
  */
 sampleplayer.CastPlayer.prototype.updateApplicationState_ = function() {
-	this.log_('updateApplicationState_');
+	console.log('updateApplicationState_');
 	if (this.mediaManager_) {
 		var idle = this.state_ === sampleplayer.State.IDLE;
 		var media = idle ? null : this.mediaManager_.getMediaInformation();
@@ -1239,7 +1238,7 @@ sampleplayer.CastPlayer.prototype.updateApplicationState_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onReady_ = function() {
-	this.log_('onReady');
+	console.log('onReady');
 	this.setState_(sampleplayer.State.IDLE, false);
 };
 /**
@@ -1249,7 +1248,7 @@ sampleplayer.CastPlayer.prototype.onReady_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onSenderDisconnected_ = function(event) {
-	this.log_('onSenderDisconnected');
+	console.log('onSenderDisconnected');
 	// When the last or only sender is connected to a receiver,
 	// tapping Disconnect stops the app running on the receiver.
 	if (this.receiverManager_.getSenders().length === 0 &&
@@ -1268,7 +1267,7 @@ sampleplayer.CastPlayer.prototype.onSenderDisconnected_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onError_ = function(error) {
-	this.log_('onError');
+	console.log('onError');
 	var self = this;
 	sampleplayer.transition_(self.element_, sampleplayer.TRANSITION_DURATION_,
 		function() {
@@ -1283,7 +1282,7 @@ sampleplayer.CastPlayer.prototype.onError_ = function(error) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
-	this.log_('onBuffering[readyState=' + this.mediaElement_.readyState + ']');
+	console.log('onBuffering[readyState=' + this.mediaElement_.readyState + ']');
 	if (this.state_ === sampleplayer.State.PLAYING &&
 		this.mediaElement_.readyState < HTMLMediaElement.HAVE_ENOUGH_DATA) {
 		this.setState_(sampleplayer.State.BUFFERING, false);
@@ -1296,7 +1295,7 @@ sampleplayer.CastPlayer.prototype.onBuffering_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
-	this.log_('onPlaying');
+	console.log('onPlaying');
 	this.cancelDeferredPlay_('media is already playing');
 	var isAudio = this.type_ == sampleplayer.Type.AUDIO;
 	var isLoading = this.state_ == sampleplayer.State.LOADING;
@@ -1318,13 +1317,13 @@ sampleplayer.CastPlayer.prototype.onPlaying_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onPause_ = function() {
-	this.log_('onPause');
+	console.log('onPause');
 	this.cancelDeferredPlay_('media is paused');
 	var isIdle = this.state_ === sampleplayer.State.IDLE;
 	var isDone = this.mediaElement_.currentTime === this.mediaElement_.duration;
 	var isUnderflow = this.player_ && this.player_.getState()['underflow'];
 	if (isUnderflow) {
-		this.log_('isUnderflow');
+		console.log('isUnderflow');
 		this.setState_(sampleplayer.State.BUFFERING, false);
 		this.mediaManager_.broadcastStatus( /* includeMedia */ false);
 	} else if (!isIdle && !isDone) {
@@ -1347,7 +1346,7 @@ sampleplayer.CastPlayer.prototype.onPause_ = function() {
 // that you plan on sending through this callback.
 sampleplayer.CastPlayer.prototype.customizedStatusCallback_ = function(
 	mediaStatus) {
-	this.log_('customizedStatusCallback_: playerState=' +
+	console.log('customizedStatusCallback_: playerState=' +
 		mediaStatus.playerState + ', this.state_=' + this.state_);
 	// TODO: remove this workaround once MediaManager detects buffering
 	// immediately.
@@ -1365,7 +1364,7 @@ sampleplayer.CastPlayer.prototype.customizedStatusCallback_ = function(
  * @private
  */
 sampleplayer.CastPlayer.prototype.onStop_ = function(event) {
-	this.log_('onStop');
+	console.log('onStop');
 	this.cancelDeferredPlay_('media is stopped');
 	var self = this;
 	sampleplayer.transition_(self.element_, sampleplayer.TRANSITION_DURATION_,
@@ -1381,7 +1380,7 @@ sampleplayer.CastPlayer.prototype.onStop_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onEnded_ = function() {
-	this.log_('onEnded');
+	console.log('onEnded');
 	this.setState_(sampleplayer.State.IDLE, true);
 	this.hidePreviewMode_();
 	if (this.stream_) this.stream_.playbackComplete();
@@ -1392,7 +1391,7 @@ sampleplayer.CastPlayer.prototype.onEnded_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onAbort_ = function() {
-	this.log_('onAbort');
+	console.log('onAbort');
 	this.setState_(sampleplayer.State.IDLE, true);
 	this.hidePreviewMode_();
 };
@@ -1439,7 +1438,7 @@ sampleplayer.CastPlayer.prototype.updateProgress_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
-	this.log_('onSeekStart');
+	console.log('onSeekStart');
 	clearTimeout(this.seekingTimeoutId_);
 	this.element_.classList.add('seeking');
 };
@@ -1449,7 +1448,7 @@ sampleplayer.CastPlayer.prototype.onSeekStart_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
-	this.log_('onSeekEnd');
+	console.log('onSeekEnd');
 	clearTimeout(this.seekingTimeoutId_);
 	this.seekingTimeoutId_ = sampleplayer.addClassWithTimeout_(this.element_,
 		'seeking', 3000);
@@ -1465,7 +1464,7 @@ sampleplayer.CastPlayer.prototype.onSeekEnd_ = function() {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onVisibilityChanged_ = function(event) {
-	this.log_('onVisibilityChanged');
+	console.log('onVisibilityChanged');
 	if (!event.isVisible) {
 		this.mediaElement_.pause();
 		this.mediaManager_.broadcastStatus(false);
@@ -1480,7 +1479,7 @@ sampleplayer.CastPlayer.prototype.onVisibilityChanged_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onPreload_ = function(event) {
-	this.log_('onPreload_');
+	console.log('onPreload_');
 	var loadRequestData =
 	/** @type {!cast.receiver.MediaManager.LoadRequestData} */
 	(event.data);
@@ -1495,7 +1494,7 @@ sampleplayer.CastPlayer.prototype.onPreload_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onCancelPreload_ = function(event) {
-	this.log_('onCancelPreload_');
+	console.log('onCancelPreload_');
 	this.hidePreviewMode_();
 	return true;
 };
@@ -1507,7 +1506,7 @@ sampleplayer.CastPlayer.prototype.onCancelPreload_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
-	this.log_('onLoad_');
+	console.log('onLoad_');
 	this.cancelDeferredPlay_('new media is loaded');
 	this.load(new cast.receiver.MediaManager.LoadInfo(
 		/** @type {!cast.receiver.MediaManager.LoadRequestData} */
@@ -1521,7 +1520,7 @@ sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onEditTracksInfo_ = function(event) {
-	this.log_('onEditTracksInfo');
+	console.log('onEditTracksInfo');
 	this.onEditTracksInfoOrig_(event);
 	// If the captions are embedded or ttml we need to enable/disable tracks
 	// as needed (vtt is processed by the media manager)
@@ -1552,7 +1551,7 @@ sampleplayer.CastPlayer.prototype.onEditTracksInfo_ = function(event) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onMetadataLoaded_ = function(info) {
-	this.log_('onMetadataLoaded');
+	console.log('onMetadataLoaded');
 	this.onLoadSuccess_();
 	// In the case of ttml and embedded captions we need to load the cues using
 	// MPL.
@@ -1581,7 +1580,7 @@ sampleplayer.CastPlayer.prototype.onMetadataLoaded_ = function(info) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onLoadMetadataError_ = function(event) {
-	this.log_('onLoadMetadataError_');
+	console.log('onLoadMetadataError_');
 	var self = this;
 	sampleplayer.transition_(self.element_, sampleplayer.TRANSITION_DURATION_,
 		function() {
@@ -1597,7 +1596,7 @@ sampleplayer.CastPlayer.prototype.onLoadMetadataError_ = function(event) {
  */
 sampleplayer.CastPlayer.prototype.cancelDeferredPlay_ = function(cancelReason) {
 	if (this.deferredPlayCallbackId_) {
-		this.log_('Cancelled deferred playback: ' + cancelReason);
+		console.log('Cancelled deferred playback: ' + cancelReason);
 		clearTimeout(this.deferredPlayCallbackId_);
 		this.deferredPlayCallbackId_ = null;
 	}
@@ -1609,7 +1608,7 @@ sampleplayer.CastPlayer.prototype.cancelDeferredPlay_ = function(cancelReason) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.deferPlay_ = function(timeout) {
-	this.log_('Defering playback for ' + timeout + ' ms');
+	console.log('Defering playback for ' + timeout + ' ms');
 	var self = this;
 	this.deferredPlayCallbackId_ = setTimeout(function() {
 		self.deferredPlayCallbackId_ = null;
@@ -1628,7 +1627,7 @@ sampleplayer.CastPlayer.prototype.deferPlay_ = function(timeout) {
  * @private
  */
 sampleplayer.CastPlayer.prototype.onLoadSuccess_ = function() {
-	this.log_('onLoadSuccess');
+	console.log('onLoadSuccess');
 	// we should have total time at this point, so update the label
 	// and progress bar
 	var totalTime = this.mediaElement_.duration;
