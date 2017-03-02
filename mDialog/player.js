@@ -803,7 +803,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 				//if (self.stream_.type === "live") self.player_.load(protocolFunc(host), Infinity);
 				// To enable TTML captions
 				//self.player_.enableCaptions(true, cast.player.api.CaptionsType.TTML, stream.subtitlesURL);
-			};
+			//};
 			streamManager.onStreamFailed = function(error) {
 				console.log("### StreamManager: Error creating stream! " + error);
 			};
