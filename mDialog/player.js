@@ -790,12 +790,12 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 			//var streamManager = new mdialog.cast.api.StreamManager(senderData, receiverData);
 			//streamManager.getStream(contentId);
 			//streamManager.onStreamLoaded = function(stream) {
-				console.log("### StreamManager: Stream created successfully! " + stream);
-				console.log("### Stream: Playback url - " + stream.manifestURL);
-				console.log("### Stream: SAM url - " + stream.activityURL);
-				console.log("### Stream: Subtitles url - " + stream.subtitlesURL);
+				//console.log("### StreamManager: Stream created successfully! " + stream);
+				//console.log("### Stream: Playback url - " + stream.manifestURL);
+				//console.log("### Stream: SAM url - " + stream.activityURL);
+				//console.log("### Stream: Subtitles url - " + stream.subtitlesURL);
 				// Retain the created stream object for future references
-				self.stream_ = stream;
+				//self.stream_ = stream;
 				host.url = 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488430270~exp=1488433870~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=7113edd20a4f7a43c42d8bff0c74da21ebb299ce1a6bcf8c1618d531a7674324&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/cd48f23d-6415-4492-b8b3-f79915e85056/master.m3u8';//stream.hdManifestURL;
 				self.player_ = new cast.player.api.Player(host);
 				/*if (self.stream_.type === "vod")*/ self.player_.load(protocolFunc(host));
