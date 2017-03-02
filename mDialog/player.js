@@ -786,8 +786,8 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 			// Initialize mDialog Cast SDK by passing in senderData (sessionContext and streamContext)
 			// and receiverData (mediaElement, receiverManager, mediaManager)
 			// Ensure to call playbackComplete on the existing stream if it exist.
-			if (this.stream_) this.stream_.playbackComplete();
-			var streamManager = new mdialog.cast.api.StreamManager(senderData, receiverData);
+			//if (this.stream_) this.stream_.playbackComplete();
+			//var streamManager = new mdialog.cast.api.StreamManager(senderData, receiverData);
 			//streamManager.getStream(contentId);
 			//streamManager.onStreamLoaded = function(stream) {
 				console.log("### StreamManager: Stream created successfully! " + stream);
@@ -804,7 +804,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 				// To enable TTML captions
 				//self.player_.enableCaptions(true, cast.player.api.CaptionsType.TTML, stream.subtitlesURL);
 			//};
-			streamManager.onStreamFailed = function(error) {
+			/*streamManager.onStreamFailed = function(error) {
 				console.log("### StreamManager: Error creating stream! " + error);
 			};
 			streamManager.adBreaksLoaded = function(adBreaks) {
@@ -831,7 +831,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 			};
 			streamManager.clickThroughStarted = function(clickThrough) {
 				console.log("### StreamManager: ClickThrough Started! " + JSON.stringify(clickThrough));
-			};
+			};*/
 		} else {
 			console.log('Preloaded video load');
 			this.player_ = this.preloadPlayer_;
@@ -842,7 +842,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 			wasPreloaded = true;
 		}
 	}
-	this.loadMediaManagerInfo_(info, !! protocolFunc);
+	//this.loadMediaManagerInfo_(info, !! protocolFunc);
 	return wasPreloaded;
 };
 /**
