@@ -729,7 +729,8 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 				requestInfo.url = this.url;
 			}
 			console.log('### updateManifestRequestInfo: load manifest url - ' + requestInfo.url);
-			if (requestInfo.url.indexOf("mdialog.com") != -1) {
+			if (requestInfo.url.indexOf("googlevideo.com") != -1
+				|| requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
 				requestInfo.withCredentials = false;
 			} else {
 				requestInfo.withCredentials = true;
@@ -737,7 +738,8 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 		};
 		var updateLicenseRequestInfoCallback = function(requestInfo) {
 			console.log('### updateLicenseRequestInfo: request url - ' + requestInfo.url);
-			if (requestInfo.url.indexOf("mdialog.com") != -1) {
+			if (requestInfo.url.indexOf("googlevideo.com") != -1
+				|| requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
 				requestInfo.withCredentials = false;
 			} else {
 				requestInfo.withCredentials = true;
@@ -745,7 +747,8 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function(info) {
 		};
 		var updateSegmentRequestInfoCallback = function(requestInfo) {
 			console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
-			if (requestInfo.url.indexOf("mdialog.com") != -1 || requestInfo.url.indexOf("-mdialog-") != -1) {
+			if (requestInfo.url.indexOf("googlevideo.com") != -1
+				|| requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
 				requestInfo.withCredentials = false;
 			} else {
 				requestInfo.withCredentials = true;
