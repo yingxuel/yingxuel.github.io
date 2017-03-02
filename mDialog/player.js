@@ -599,8 +599,8 @@ sampleplayer.CastPlayer.prototype.maybeSendLoadCompleted_ = function(info) {
 	} else if (!this.metadataLoaded_) {
 		console.log('Deferring load response, loadedmetadata event not received');
 	} else {
-		this.onMetadataLoadedOrig_consoleo);
-	console.log('Sent load response, player is ready and metadata loaded');
+		this.onMetadataLoadedOrig_(info);
+		console.log('Sent load response, player is ready and metadata loaded');
 	}
 };
 /**
