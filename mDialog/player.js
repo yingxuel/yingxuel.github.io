@@ -77,8 +77,8 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function() {
 	host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
 	host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
 
-	self.player_ = new cast.player.api.Player(host);
-	self.player_.load(cast.player.api.CreateHlsStreamingProtocol(host), 0);
+	this.player_ = new cast.player.api.Player(host);
+	this.player_.load(cast.player.api.CreateHlsStreamingProtocol(host), 0);
 };
 
 /**
