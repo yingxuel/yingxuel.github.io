@@ -13,7 +13,6 @@ sampleplayer.CastPlayer = function(element) {
 	this.player_ = null;
 
 	this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
-	this.receiverManager_.onReady = this.onReady_.bind(this);
 	this.receiverManager_.onSenderDisconnected =
 		this.onSenderDisconnected_.bind(this);
 
