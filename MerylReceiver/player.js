@@ -24,7 +24,7 @@ var Player = function(mediaElement) {
   };
   this.receiverManager_.onSenderDisconnected =
       this.onSenderDisconnected.bind(this);
-  this.imaMessageBus_ = this.receiverManager_.getCastMessageBus(namespace);
+  /*this.imaMessageBus_ = this.receiverManager_.getCastMessageBus(namespace);
   this.imaMessageBus_.onMessage = function(event) {
     console.log('Received message from sender: ' + event.data);
     var message = event.data.split(',');
@@ -53,7 +53,7 @@ var Player = function(mediaElement) {
         self.broadcast_('Message not recognized');
         break;
     }
-  };
+  };*/
 
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
@@ -273,6 +273,7 @@ Player.prototype.onLoad = function(event) {
       console.log(this.streamRequest);
   }
   document.getElementById('splash').style.display = 'none';
+  this.requestStream_();
 };
 
 Player.prototype.requestStream_ = function() {
@@ -304,7 +305,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   var host = new cast.player.api.Host({
     //'url': url,
-    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488573192~exp=1488576792~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=1ff9d8993b7908c7e944fc6930bfad2b2fe5033cf97ceed078ea985d506e440c&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/4c097db0-5b4f-4a3b-bff6-46d55b5d2931/master.m3u8',
+    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488576323~exp=1488579923~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=e9d3718a80825cf2c36e5faf1258e09f0b045b8f51a6bcd6b59d5dd331d9857e&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/2552c71c-20db-4113-9965-b8aa33254156/master.m3u8',
     'mediaElement': this.mediaElement_
   });
   this.broadcast_('onStreamDataReceived: ' + url);
