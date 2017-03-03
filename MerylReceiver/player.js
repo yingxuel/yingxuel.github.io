@@ -308,7 +308,7 @@ Player.prototype.onStreamDataReceived = function(url) {
     'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488576644~exp=1488580244~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=4c0a20013460e0bf4b39a32dbc761aa76818ef9b2b1c476499b2bdd4a1b7fa3d&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/0375b5df-9ad6-46d3-8f85-1fda4c58dc5b/master.m3u8',
     'mediaElement': this.mediaElement_
   });
-  this.broadcast_('onStreamDataReceived: ' + url);
+  //this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
     if (self.useSdk_) {
       self.streamManager_.processMetadata(type, data, timestamp);
@@ -346,7 +346,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
-  this.broadcast_('start time: ' + currentTime);
+  //this.broadcast_('start time: ' + currentTime);
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host));//, currentTime);
