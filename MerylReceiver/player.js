@@ -25,7 +25,7 @@ sampleplayer.CastPlayer = function(mediaElement) {
   };
   this.receiverManager_.onSenderDisconnected =
       this.onSenderDisconnected.bind(this);
-  /*this.imaMessageBus_ = this.receiverManager_.getCastMessageBus(namespace);
+  this.imaMessageBus_ = this.receiverManager_.getCastMessageBus(namespace);
   this.imaMessageBus_.onMessage = function(event) {
     console.log('Received message from sender: ' + event.data);
     var message = event.data.split(',');
@@ -54,11 +54,11 @@ sampleplayer.CastPlayer = function(mediaElement) {
         self.broadcast_('Message not recognized');
         break;
     }
-  };*/
+  };
 
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
-  //this.mediaManager_.onSeek = this.onSeek.bind(this);
+  this.mediaManager_.onSeek = this.onSeek.bind(this);
   if (this.useSdk_) {
     this.initStreamManager_();
   }
@@ -217,9 +217,9 @@ sampleplayer.CastPlayer.prototype.sendPingForTesting_ = function(event, number) 
     testingPing += '@?num=' + number + 'ld';
   }
   var xmlhttp = new XMLHttpRequest();
-  //xmlhttp.open('GET', testingPing, true);
-  //xmlhttp.send();
-  //this.broadcast_('Pinging url: ' + testingPing);
+  xmlhttp.open('GET', testingPing, true);
+  xmlhttp.send();
+  this.broadcast_('Pinging url: ' + testingPing);
 };
 
 
@@ -263,7 +263,7 @@ sampleplayer.CastPlayer.prototype.onSenderDisconnected = function(event) {
  * @param {!cast.receiver.MediaManager.Event} event The load event.
  */
 sampleplayer.CastPlayer.prototype.onLoad = function(event) {
-  /*var imaRequestData = event.data.media.customData;
+  var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
   if (imaRequestData.assetKey) {
     this.streamRequest =
@@ -272,17 +272,17 @@ sampleplayer.CastPlayer.prototype.onLoad = function(event) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
       console.log(this.streamRequest);
-  }*/
+  }
   document.getElementById('splash').style.display = 'none';
   this.requestStream_();
 };
 
 sampleplayer.CastPlayer.prototype.requestStream_ = function() {
-  /*if (this.useSdk_) {
+  if (this.useSdk_) {
     this.streamManager_.requestStream(this.streamRequest);
-  } else {*/
+  } else {
     this.onStreamDataReceived('');
-  //}
+  }
 };
 
 
@@ -303,55 +303,21 @@ sampleplayer.CastPlayer.prototype.onSeek = function(event) {
  * @param {!string} url of the stream.
  */
 sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
-  /*var self = this;
-  var host = new cast.player.api.Host({
-    //'url': url,
-    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488580070~exp=1488583670~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=16d0f0764b57a3e4de4ae5d3e693c712c1e8c69c4799c61aca8c0d2fd02a1844&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/9a19220d-120f-45d9-9ec2-159fdcf00394/master.m3u8',
-    'mediaElement': this.mediaElement_
-  });
-  //this.broadcast_('onStreamDataReceived: ' + url);
+  var self = this;
+  this.broadcast_('onStreamDataReceived: ' + url);
   host.processMetadata = function(type, data, timestamp) {
     if (self.useSdk_) {
       self.streamManager_.processMetadata(type, data, timestamp);
     }
-  };*/
+  };
   var host = new cast.player.api.Host({
     'mediaElement': this.mediaElement_,
-    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488580070~exp=1488583670~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=16d0f0764b57a3e4de4ae5d3e693c712c1e8c69c4799c61aca8c0d2fd02a1844&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/9a19220d-120f-45d9-9ec2-159fdcf00394/master.m3u8',
+    'url': url
   });
-  /*host.updateManifestRequestInfo = function(requestInfo) {
-    if (!requestInfo.url) {
-      requestInfo.url = this.url;
-    }
-    if (requestInfo.url.indexOf("googlevideo.com") != -1
-      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
-    console.log('update manifest: ' + requestInfo.withCredentials);
-  };
-  host.updateLicenseRequestInfo = function(requestInfo) {
-    if (requestInfo.url.indexOf("googlevideo.com") != -1
-      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
-    console.log('update license: ' + requestInfo.withCredentials);
-  };
-  host.updateSegmentRequestInfoCallback = function(requestInfo) {
-    if (requestInfo.url.indexOf("googlevideo.com") != -1
-      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
-    console.log('update segment: ' + requestInfo.withCredentials);
-  };
+
   var currentTime = this.startTime_ > 0 ? this.streamManager_
-    .streamTimeForContentTime(this.startTime_) : 0;*/
-  //this.broadcast_('start time: ' + currentTime);*/
+    .streamTimeForContentTime(this.startTime_) : 0;
+  this.broadcast_('start time: ' + currentTime);
   var updateManifestRequestInfoCallback = function(requestInfo) {
     if (!requestInfo.url) {
       requestInfo.url = this.url;
@@ -389,9 +355,9 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host));//, currentTime);
-  /*if (this.subtitles[0] && this.subtitles[0].ttml) {
+  if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
-  }*/
+  }
 };
 
 /**
