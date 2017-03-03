@@ -58,7 +58,7 @@ sampleplayer.CastPlayer = function(mediaElement) {
 
   this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
   this.mediaManager_.onLoad = this.onLoad.bind(this);
-  this.mediaManager_.onSeek = this.onSeek.bind(this);
+  //this.mediaManager_.onSeek = this.onSeek.bind(this);
   if (this.useSdk_) {
     this.initStreamManager_();
   }
@@ -263,7 +263,7 @@ sampleplayer.CastPlayer.prototype.onSenderDisconnected = function(event) {
  * @param {!cast.receiver.MediaManager.Event} event The load event.
  */
 sampleplayer.CastPlayer.prototype.onLoad = function(event) {
-  var imaRequestData = event.data.media.customData;
+  /*var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
   if (imaRequestData.assetKey) {
     this.streamRequest =
@@ -273,16 +273,16 @@ sampleplayer.CastPlayer.prototype.onLoad = function(event) {
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
       console.log(this.streamRequest);
   }
-  document.getElementById('splash').style.display = 'none';
+  document.getElementById('splash').style.display = 'none';*/
   this.requestStream_();
 };
 
 sampleplayer.CastPlayer.prototype.requestStream_ = function() {
-  if (this.useSdk_) {
+  /*if (this.useSdk_) {
     this.streamManager_.requestStream(this.streamRequest);
-  } else {
+  } else {*/
     this.onStreamDataReceived('');
-  }
+  //}
 };
 
 
@@ -303,7 +303,7 @@ sampleplayer.CastPlayer.prototype.onSeek = function(event) {
  * @param {!string} url of the stream.
  */
 sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
-  var self = this;
+  /*var self = this;
   var host = new cast.player.api.Host({
     //'url': url,
     'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488580070~exp=1488583670~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=16d0f0764b57a3e4de4ae5d3e693c712c1e8c69c4799c61aca8c0d2fd02a1844&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/9a19220d-120f-45d9-9ec2-159fdcf00394/master.m3u8',
@@ -346,8 +346,45 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
     console.log('update segment: ' + requestInfo.withCredentials);
   };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
-    .streamTimeForContentTime(this.startTime_) : 0;
+    .streamTimeForContentTime(this.startTime_) : 0;*/
   //this.broadcast_('start time: ' + currentTime);
+  var updateManifestRequestInfoCallback = function(requestInfo) {
+    if (!requestInfo.url) {
+      requestInfo.url = this.url;
+    }
+    console.log('### updateManifestRequestInfo: load manifest url - ' + requestInfo.url);
+    if (requestInfo.url.indexOf("googlevideo.com") != -1
+      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
+      requestInfo.withCredentials = false;
+    } else {
+      requestInfo.withCredentials = true;
+    }
+  };
+  var updateLicenseRequestInfoCallback = function(requestInfo) {
+    console.log('### updateLicenseRequestInfo: request url - ' + requestInfo.url);
+    if (requestInfo.url.indexOf("googlevideo.com") != -1
+      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
+      requestInfo.withCredentials = false;
+    } else {
+      requestInfo.withCredentials = true;
+    }
+  };
+  var updateSegmentRequestInfoCallback = function(requestInfo) {
+    console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
+    if (requestInfo.url.indexOf("googlevideo.com") != -1 || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
+      requestInfo.withCredentials = false;
+    } else {
+      requestInfo.withCredentials = true;
+    }
+  };
+  // MD Cast SDK Integration
+  var host = new cast.player.api.Host({
+    'mediaElement': this.mediaElement_,
+    'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488580070~exp=1488583670~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=16d0f0764b57a3e4de4ae5d3e693c712c1e8c69c4799c61aca8c0d2fd02a1844&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/9a19220d-120f-45d9-9ec2-159fdcf00394/master.m3u8',
+  });
+  host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
+  host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
+  host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host));//, currentTime);

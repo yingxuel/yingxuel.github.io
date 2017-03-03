@@ -87,7 +87,13 @@ Player.prototype.loadVideo_ = function() {
  */
 Player.prototype.onSenderDisconnected_ = function(event) {
 	console.log('onSenderDisconnected');
-	this.receiverManager_.stop();
+	// When the last or only sender is connected to a receiver,
+  // tapping Disconnect stops the app running on the receiver.
+  if (this.receiverManager_.getSenders().length === 0 &&
+      event.reason ===
+          cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
+    this.receiverManager_.stop();
+  }
 };
 /**
  * Called when media has an error. Transitions to IDLE state and
