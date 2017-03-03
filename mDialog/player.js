@@ -18,34 +18,35 @@ sampleplayer.CastPlayer = function(element) {
 		this.onSenderDisconnected_.bind(this);
 
 	this.imaMessageBus_ = this.receiverManager_.getCastMessageBus(namespace);
-  this.imaMessageBus_.onMessage = function(event) {
-    console.log('Received message from sender: ' + event.data);
-    var message = event.data.split(',');
-    var method = message[0];
-    switch (method) {
-      case 'bookmark':
-        var time = parseFloat(message[1]);
-        self.bookmark_(time);
-        break;
-      case 'seek':
-        var time = parseFloat(message[1]);
-        self.seek_(time);
-        break;
-      case 'snapback':
-        var time = parseFloat(message[1]);
-        self.snapback_(time);
-        break;
-      case 'getContentTime':
-        var contentTime = self.getContentTime_();
-        self.broadcast_('contentTime,' + contentTime);
-        break;
-      case 'requestStream':
-        self.requestStream_();
-        break;
-      default:
-        self.broadcast_('Message not recognized');
-        break;
-    }
+  	this.imaMessageBus_.onMessage = function(event) {
+    	console.log('Received message from sender: ' + event.data);
+    	var message = event.data.split(',');
+    	var method = message[0];
+    	switch (method) {
+      		case 'bookmark':
+        		var time = parseFloat(message[1]);
+        		self.bookmark_(time);
+        		break;
+      		case 'seek':
+        		var time = parseFloat(message[1]);
+        		self.seek_(time);
+        		break;
+      		case 'snapback':
+        		var time = parseFloat(message[1]);
+        		self.snapback_(time);
+        		break;
+      		case 'getContentTime':
+        		var contentTime = self.getContentTime_();
+        		self.broadcast_('contentTime,' + contentTime);
+        		break;
+      		case 'requestStream':
+        		self.requestStream_();
+        		break;
+      		default:
+        		self.broadcast_('Message not recognized');
+        		break;
+    	}
+	}
 
 	this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
 
