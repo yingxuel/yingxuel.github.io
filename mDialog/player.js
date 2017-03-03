@@ -8,9 +8,7 @@ var sampleplayer = sampleplayer || {};
  * @export
  */
 sampleplayer.CastPlayer = function(element) {
-	this.element_ = element;
-	this.mediaElement_ = /** @type {HTMLMediaElement} */
-		(this.element_.querySelector('video'));
+	this.mediaElement_ = element;
 
 	this.player_ = null;
 
