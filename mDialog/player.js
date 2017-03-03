@@ -49,9 +49,6 @@ sampleplayer.CastPlayer = function(element) {
 	}
 
 	this.mediaManager_ = new cast.receiver.MediaManager(this.mediaElement_);
-
-	this.onLoadOrig_ =
-		this.mediaManager_.onLoad.bind(this.mediaManager_);
 	this.mediaManager_.onLoad = this.onLoad_.bind(this);
 };
 
@@ -94,7 +91,7 @@ sampleplayer.CastPlayer.prototype.loadVideo_ = function() {
 	};
 	var updateSegmentRequestInfoCallback = function(requestInfo) {
 		console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
-		if (requestInfo.url.indexOf("googlevideo.com") != -1 || requestInfo.url.indexOf("-mdialog-") != -1) {
+		if (requestInfo.url.indexOf("googlevideo.com") != -1 || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
 			requestInfo.withCredentials = false;
 		} else {
 			requestInfo.withCredentials = true;
