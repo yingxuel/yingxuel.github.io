@@ -319,7 +319,7 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
     'mediaElement': this.mediaElement_,
     'url': 'https://cbsdaistg-vh.akamaihd.net/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/master.m3u8?hdnea=st=1488580070~exp=1488583670~acl=/i/temp_hd_gallery_video/CBS_Production_Outlet_VMS/video_robot/CBS_Production_Entertainment/2017/02/19/880378435780/CBS_2_BROKE_GIRLS_617_CONTENT_CIAN_vr_20M_1053680_,1848000,548000,158000,2596000,1248000,298000,3596000,848000,.mp4.csmil/*~hmac=16d0f0764b57a3e4de4ae5d3e693c712c1e8c69c4799c61aca8c0d2fd02a1844&originpath=/ondemand/hls/content/6067/vid/C1BDCF7F-2B9C-4F05-1009-53D6F0549AA3/CHS/streams/9a19220d-120f-45d9-9ec2-159fdcf00394/master.m3u8',
   });
-  host.updateManifestRequestInfo = function(requestInfo) {
+  /*host.updateManifestRequestInfo = function(requestInfo) {
     if (!requestInfo.url) {
       requestInfo.url = this.url;
     }
@@ -348,11 +348,11 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
       requestInfo.withCredentials = true;
     }
     console.log('update segment: ' + requestInfo.withCredentials);
-  };/*
+  };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;*/
-  //this.broadcast_('start time: ' + currentTime);
-  /*var updateManifestRequestInfoCallback = function(requestInfo) {
+  //this.broadcast_('start time: ' + currentTime);*/
+  var updateManifestRequestInfoCallback = function(requestInfo) {
     if (!requestInfo.url) {
       requestInfo.url = this.url;
     }
@@ -380,12 +380,12 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
     } else {
       requestInfo.withCredentials = true;
     }
-  };*/
+  };
   // MD Cast SDK Integration
   
-  //host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
-  //host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
-  //host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
+  host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
+  host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
+  host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
     cast.player.api.CreateHlsStreamingProtocol(host));//, currentTime);
