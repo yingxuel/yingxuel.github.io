@@ -272,8 +272,8 @@ sampleplayer.CastPlayer.prototype.onLoad = function(event) {
     this.streamRequest =
       new google.ima.dai.api.VODStreamRequest(imaRequestData);
       console.log(this.streamRequest);
-  }
-  document.getElementById('splash').style.display = 'none';*/
+  }*/
+  document.getElementById('splash').style.display = 'none';
   this.requestStream_();
 };
 
