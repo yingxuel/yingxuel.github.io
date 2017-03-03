@@ -305,16 +305,16 @@ sampleplayer.CastPlayer.prototype.onSeek = function(event) {
 sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
   var self = this;
   this.broadcast_('onStreamDataReceived: ' + url);
-  host.processMetadata = function(type, data, timestamp) {
-    if (self.useSdk_) {
-      self.streamManager_.processMetadata(type, data, timestamp);
-    }
-  };
   var host = new cast.player.api.Host({
     'mediaElement': this.mediaElement_,
     'url': url
   });
 
+  host.processMetadata = function(type, data, timestamp) {
+    if (self.useSdk_) {
+      self.streamManager_.processMetadata(type, data, timestamp);
+    }
+  };
   var currentTime = this.startTime_ > 0 ? this.streamManager_
     .streamTimeForContentTime(this.startTime_) : 0;
   this.broadcast_('start time: ' + currentTime);
