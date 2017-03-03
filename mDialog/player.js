@@ -1,12 +1,13 @@
 'use strict';
 
+var sampleplayer = sampleplayer || {};
 /**
  * @param {!Element} element the element to attach the player
  * @struct
  * @constructor
  * @export
  */
-var Player = function(element) {
+sampleplayer.CastPlayer = function(element) {
 	var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
 	this.mediaElement_ = element;
 
@@ -20,7 +21,7 @@ var Player = function(element) {
 	this.mediaManager_.onLoad = this.onLoad_.bind(this);
 };
 
-Player.prototype.start = function() {
+sampleplayer.CastPlayer.prototype.start = function() {
 	this.receiverManager_.start();
 };
 
@@ -31,7 +32,7 @@ Player.prototype.start = function() {
  * @return {boolean} Whether the media was preloaded
  * @private
  */
-Player.prototype.loadVideo_ = function() {
+sampleplayer.CastPlayer.prototype.loadVideo_ = function() {
 	console.log('loadVideo_');
 	// MD Cast SDK Integration
 	// Set withCredentials = true if the request to your server or CDN requires passong cookies 
@@ -84,7 +85,7 @@ Player.prototype.loadVideo_ = function() {
  * @param {cast.receiver.CastReceiverManager.SenderDisconnectedEvent} event
  * @private
  */
-Player.prototype.onSenderDisconnected_ = function(event) {
+sampleplayer.CastPlayer.prototype.onSenderDisconnected_ = function(event) {
 	console.log('onSenderDisconnected');
 	this.receiverManager_.stop();
 };
@@ -96,7 +97,7 @@ Player.prototype.onSenderDisconnected_ = function(event) {
  * @param {!Object} error
  * @private
  */
-Player.prototype.onError_ = function(error) {
+sampleplayer.CastPlayer.prototype.onError_ = function(error) {
 	console.log('onError: ' + error);
 };
 
@@ -107,7 +108,7 @@ Player.prototype.onError_ = function(error) {
  * @param {cast.receiver.MediaManager.Event} event The load event.
  * @private
  */
-Player.prototype.onLoad_ = function(event) {
+sampleplayer.CastPlayer.prototype.onLoad_ = function(event) {
 	console.log('onLoad_');
 	this.loadVideo_();
 };
