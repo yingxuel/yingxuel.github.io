@@ -9,6 +9,8 @@ var sampleplayer = sampleplayer || {};
  */
 sampleplayer.CastPlayer = function(element) {
 	this.element_ = element;
+	this.mediaElement_ = /** @type {HTMLMediaElement} */
+		(this.element_.querySelector('video'));
 
 	this.player_ = null;
 
