@@ -315,15 +315,15 @@ Player.prototype.onStreamDataReceived = function(url) {
       requestInfo.url = this.url;
     }
     console.log('### updateManifestRequestInfo: load manifest url - ' + requestInfo.url);
-      requestInfo.withCredentials = false;
+      requestInfo.withCredentials = true;
   };
   var updateLicenseRequestInfoCallback = function(requestInfo) {
     console.log('### updateLicenseRequestInfo: request url - ' + requestInfo.url);
-    requestInfo.withCredentials = false;
+    requestInfo.withCredentials = true;
   };
   var updateSegmentRequestInfoCallback = function(requestInfo) {
     console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
-    requestInfo.withCredentials = false;
+    requestInfo.withCredentials = true;
   };
 
   host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
