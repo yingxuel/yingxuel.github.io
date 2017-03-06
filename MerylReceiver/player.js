@@ -323,32 +323,17 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
       requestInfo.url = this.url;
     }
     console.log('### updateManifestRequestInfo: load manifest url - ' + requestInfo.url);
-    if (requestInfo.url.indexOf("googlevideo.com") != -1
-      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
       requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
   };
   var updateLicenseRequestInfoCallback = function(requestInfo) {
     console.log('### updateLicenseRequestInfo: request url - ' + requestInfo.url);
-    if (requestInfo.url.indexOf("googlevideo.com") != -1
-      || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
+    requestInfo.withCredentials = false;
   };
   var updateSegmentRequestInfoCallback = function(requestInfo) {
     console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
-    if (requestInfo.url.indexOf("googlevideo.com") != -1 || requestInfo.url.indexOf("cbsdai-ads.akamaized.net") != -1) {
-      requestInfo.withCredentials = false;
-    } else {
-      requestInfo.withCredentials = true;
-    }
+    requestInfo.withCredentials = false;
   };
-  // MD Cast SDK Integration
-  
+
   host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
   host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
   host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
