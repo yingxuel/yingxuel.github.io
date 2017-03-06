@@ -1,6 +1,5 @@
 'use strict';
 
-var sampleplayer = sampleplayer || {};
 /**
  * Entry point for the sample video player which uses media element for
  * rendering video streams.
@@ -8,7 +7,7 @@ var sampleplayer = sampleplayer || {};
  * @this {Player}
  * @param {!HTMLMediaElement} mediaElement for video rendering.
  */
-sampleplayer.CastPlayer = function(mediaElement) {
+var Player = function(mediaElement) {
   var namespace = 'urn:x-cast:com.google.ads.interactivemedia.dai.cast';
   var self = this;
   this.useSdk_ = true;
@@ -47,9 +46,6 @@ sampleplayer.CastPlayer = function(mediaElement) {
         var contentTime = self.getContentTime_();
         self.broadcast_('contentTime,' + contentTime);
         break;
-      case 'requestStream':
-        self.requestStream_();
-        break;
       default:
         self.broadcast_('Message not recognized');
         break;
@@ -68,7 +64,7 @@ sampleplayer.CastPlayer = function(mediaElement) {
  * Initializes receiver stream manager and adds callbacks.
  * @private
  */
-sampleplayer.CastPlayer.prototype.initStreamManager_ = function() {
+Player.prototype.initStreamManager_ = function() {
   var self = this;
   this.streamManager_ =
       new google.ima.dai.api.StreamManager(this.mediaElement_);
@@ -199,7 +195,7 @@ sampleplayer.CastPlayer.prototype.initStreamManager_ = function() {
  * @returns {number} The content time.
  * @private
  */
-sampleplayer.CastPlayer.prototype.getContentTime_ = function() {
+Player.prototype.getContentTime_ = function() {
   return this.streamManager_
       .contentTimeForStreamTime(this.mediaElement_.currentTime);
 };
@@ -211,7 +207,7 @@ sampleplayer.CastPlayer.prototype.getContentTime_ = function() {
  * @param {number} number The ad number.
  * @private
  */
-sampleplayer.CastPlayer.prototype.sendPingForTesting_ = function(event, number) {
+Player.prototype.sendPingForTesting_ = function(event, number) {
   var testingPing = 'http://www.example.com/' + event;
   if (number) {
     testingPing += '@?num=' + number + 'ld';
@@ -228,7 +224,7 @@ sampleplayer.CastPlayer.prototype.sendPingForTesting_ = function(event, number) 
  * @param {!string} message Message to be sent to senders.
  * @private
  */
-sampleplayer.CastPlayer.prototype.broadcast_ = function(message) {
+Player.prototype.broadcast_ = function(message) {
   if (this.imaMessageBus_ && this.imaMessageBus_.broadcast) {
     this.imaMessageBus_.broadcast(message);
   }
@@ -238,7 +234,7 @@ sampleplayer.CastPlayer.prototype.broadcast_ = function(message) {
 /**
  * Starts receiver manager which tracks playback of the stream.
  */
-sampleplayer.CastPlayer.prototype.start = function() {
+Player.prototype.start = function() {
   this.receiverManager_.start();
 };
 
@@ -246,7 +242,7 @@ sampleplayer.CastPlayer.prototype.start = function() {
  * Called when a sender disconnects from the app.
  * @param {cast.receiver.CastReceiverManager.SenderDisconnectedEvent} event
  */
-sampleplayer.CastPlayer.prototype.onSenderDisconnected = function(event) {
+Player.prototype.onSenderDisconnected = function(event) {
   console.log('onSenderDisconnected');
   // When the last or only sender is connected to a receiver,
   // tapping Disconnect stops the app running on the receiver.
@@ -262,7 +258,7 @@ sampleplayer.CastPlayer.prototype.onSenderDisconnected = function(event) {
  * Called when we receive a LOAD message from the sender.
  * @param {!cast.receiver.MediaManager.Event} event The load event.
  */
-sampleplayer.CastPlayer.prototype.onLoad = function(event) {
+Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
   if (imaRequestData.assetKey) {
@@ -274,10 +270,6 @@ sampleplayer.CastPlayer.prototype.onLoad = function(event) {
       console.log(this.streamRequest);
   }
   document.getElementById('splash').style.display = 'none';
-  this.requestStream_();
-};
-
-sampleplayer.CastPlayer.prototype.requestStream_ = function() {
   if (this.useSdk_) {
     this.streamManager_.requestStream(this.streamRequest);
   } else {
@@ -291,7 +283,7 @@ sampleplayer.CastPlayer.prototype.requestStream_ = function() {
  * @param {!cast.receiver.MediaManager.Event} event The seek event.
  * @this {Player}
  */
-sampleplayer.CastPlayer.prototype.onSeek = function(event) {
+Player.prototype.onSeek = function(event) {
   var currentTime = event.data.currentTime;
   this.snapback_(currentTime);
   this.mediaManager_.broadcastStatus(true, event.data.requestId);
@@ -302,7 +294,7 @@ sampleplayer.CastPlayer.prototype.onSeek = function(event) {
  * Loads stitched ads+content stream.
  * @param {!string} url of the stream.
  */
-sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
+Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   this.broadcast_('onStreamDataReceived: ' + url);
   var host = new cast.player.api.Host({
@@ -349,7 +341,7 @@ sampleplayer.CastPlayer.prototype.onStreamDataReceived = function(url) {
  * Bookmarks content so stream will return to this location if revisited.
  * @private
  */
-sampleplayer.CastPlayer.prototype.bookmark_ = function() {
+Player.prototype.bookmark_ = function() {
   this.broadcast_('Current Time: ' + this.mediaElement_.currentTime);
   var bookmarkTime = this.streamManager_
     .contentTimeForStreamTime(this.mediaElement_.currentTime);
@@ -361,7 +353,7 @@ sampleplayer.CastPlayer.prototype.bookmark_ = function() {
  * @param {number} time The time to seek to in seconds.
  * @private
  */
-sampleplayer.CastPlayer.prototype.seek_ = function(time) {
+Player.prototype.seek_ = function(time) {
   if (this.adIsPlaying_) {
     return;
   }
@@ -375,7 +367,7 @@ sampleplayer.CastPlayer.prototype.seek_ = function(time) {
  * @param {number} time The time to seek to in seconds.
  * @private
  */
-sampleplayer.CastPlayer.prototype.snapback_ = function(time) {
+Player.prototype.snapback_ = function(time) {
   var previousCuepoint =
     this.streamManager_.previousCuePointForStreamTime(time);
   console.log(previousCuepoint);
