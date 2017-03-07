@@ -18,6 +18,7 @@ var Player = function(mediaElement) {
   this.startTime_ = 0;
   this.adIsPlaying_ = false;
   this.mediaElement_ = mediaElement;
+  this.manifestUrl_ = '';
   this.receiverManager_ = cast.receiver.CastReceiverManager.getInstance();
   this.receiverManager_.onSenderConnected = function(event) {
     console.log('Sender Connected');
@@ -296,6 +297,7 @@ Player.prototype.onSeek = function(event) {
  */
 Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
+  this.manifestUrl_ = url;
   this.broadcast_('onStreamDataReceived: ' + url);
   var host = new cast.player.api.Host({
     'mediaElement': this.mediaElement_,
@@ -312,17 +314,14 @@ Player.prototype.onStreamDataReceived = function(url) {
   this.broadcast_('start time: ' + currentTime);
   var updateManifestRequestInfoCallback = function(requestInfo) {
     if (!requestInfo.url) {
-      requestInfo.url = this.url;
+      requestInfo.url = self.manifestUrl_;
     }
-    console.log('### updateManifestRequestInfo: load manifest url - ' + requestInfo.url);
       requestInfo.withCredentials = true;
   };
   var updateLicenseRequestInfoCallback = function(requestInfo) {
-    console.log('### updateLicenseRequestInfo: request url - ' + requestInfo.url);
     requestInfo.withCredentials = true;
   };
   var updateSegmentRequestInfoCallback = function(requestInfo) {
-    console.log('### updateSegmentRequestInfo: request url - ' + requestInfo.url);
     requestInfo.withCredentials = true;
   };
 
@@ -331,7 +330,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
   this.castPlayer_ = new cast.player.api.Player(host);
   this.castPlayer_.load(
-    cast.player.api.CreateHlsStreamingProtocol(host));//, currentTime);
+    cast.player.api.CreateHlsStreamingProtocol(host) , currentTime);
   if (this.subtitles[0] && this.subtitles[0].ttml) {
     this.castPlayer_.enableCaptions(true, 'ttml', this.subtitles[0].ttml);
   }
