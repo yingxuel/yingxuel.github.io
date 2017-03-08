@@ -16,6 +16,7 @@ var Player = function(mediaElement) {
   this.castPlayer_ = null;
   this.seekToTimeAfterAdBreak_ = 0;
   this.startTime_ = 0;
+  this.needsCredentials_ = false;
   this.adIsPlaying_ = false;
   this.mediaElement_ = mediaElement;
   this.manifestUrl_ = '';
@@ -262,6 +263,7 @@ Player.prototype.onSenderDisconnected = function(event) {
 Player.prototype.onLoad = function(event) {
   var imaRequestData = event.data.media.customData;
   this.startTime_ = imaRequestData.startTime;
+  this.needsCredentials_ = imaRequestData.needsCredentials;
   if (imaRequestData.assetKey) {
     this.streamRequest =
       new google.ima.dai.api.LiveStreamRequest(imaRequestData);
@@ -299,32 +301,40 @@ Player.prototype.onStreamDataReceived = function(url) {
   var self = this;
   this.manifestUrl_ = url;
   this.broadcast_('onStreamDataReceived: ' + url);
+  var currentTime = this.startTime_ > 0 ? this.streamManager_
+    .streamTimeForContentTime(this.startTime_) : 0;
+  this.broadcast_('start time: ' + currentTime);
+
   var host = new cast.player.api.Host({
     'mediaElement': this.mediaElement_,
     'url': url
   });
 
-  host.processMetadata = function(type, data, timestamp) {
+  var processMetadataCallback = function(type, data, timestamp) {
     if (self.useSdk_) {
       self.streamManager_.processMetadata(type, data, timestamp);
     }
   };
-  var currentTime = this.startTime_ > 0 ? this.streamManager_
-    .streamTimeForContentTime(this.startTime_) : 0;
-  this.broadcast_('start time: ' + currentTime);
   var updateManifestRequestInfoCallback = function(requestInfo) {
     if (!requestInfo.url) {
       requestInfo.url = self.manifestUrl_;
     }
+    if (self.needsCredentials_) {
       requestInfo.withCredentials = true;
+    }
   };
   var updateLicenseRequestInfoCallback = function(requestInfo) {
-    requestInfo.withCredentials = true;
+    if (self.needsCredentials_) {
+      requestInfo.withCredentials = true;
+    }
   };
   var updateSegmentRequestInfoCallback = function(requestInfo) {
-    requestInfo.withCredentials = true;
+    if (self.needsCredentials_) {
+      requestInfo.withCredentials = true;
+    }
   };
 
+  host.processMetadata = processMetadataCallback;
   host.updateManifestRequestInfo = updateManifestRequestInfoCallback;
   host.updateLicenseRequestInfo = updateLicenseRequestInfoCallback;
   host.updateSegmentRequestInfo = updateSegmentRequestInfoCallback;
