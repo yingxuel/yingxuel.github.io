@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sender Demo</title>
+<script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
+<script src="sender.js"></script>
+</head>
+<body>
+  <div style="position:relative; height:50px;">
+    <span id="cast-live-button" style="height:26px; border:1px solid black; text-align:center; line-height:26px; cursor:pointer; padding: 7px; margin:10px">Cast Live</span>
+    <span style="margin:10px;">
+      Asset Key <input id="live-asset-key-input" type="text" style="height:26px;" value="tiRla-KqQPKRfvz2BQ2agQ">
+    </span>
+    <span style="margin:10px;">
+      API Key <input id="live-api-key-input" type="text" style="height:26px;">
+    </span>
+  </div>
+  <div style="position:relative; height:50px;">
+    <span id="cast-vod-button" style="height:26px; border:1px solid black; text-align:center; line-height:26px; cursor:pointer; padding: 7px; margin:10px">Cast VOD</span>
+    <span style="margin:10px;">
+      CMS Id <input id="vod-cms-id-input" type="text" style="height:26px;" value="19823">
+    </span>
+    <span style="margin:10px;">
+      Video Id <input id="vod-video-id-input" type="text" style="height:26px;" value="ima-test">
+    </span>
+    <span style="margin:10px;">
+      API Key <input id="vod-api-key-input" type="text" style="height:26px;">
+    </span>
+  </div>
+  <div>
+    <input type="checkbox" id="credentials-checkbox"> Needs Credentials
+  </div>
+  <div style="position:relative; height:50px;">
+    <div id="seek-button" style="position:absolute; width:50px; height:30px; border:1px solid black; text-align:center; line-height:30px; cursor:pointer; margin: 10px;">Seek</div>
+    <div style="position:absolute; left:60px; margin:10px;">
+      <input id="seek-input" type="text" style="height:26px;">
+    </div>
+  </div>
+  <div style="position:relative; height:50px;">
+    <div id="snapback-button" style="position:absolute; width:100px; height:30px; border:1px solid black; text-align:center; line-height:30px; cursor:pointer; margin: 10px;">Snapback</div>
+    <div style="position:absolute; left:110px; margin:10px;">
+      <input id="snapback-input" type="text" style="height:26px;">
+    </div>
+  </div>
+  <div id="bookmark-button" style="width:100px; height:30px; border:1px solid black; text-align:center; line-height:30px; cursor:pointer; margin: 10px;">Bookmark</div>
+  <script type="text/javascript">
+    var sender = new Sender();
+  </script>
+</body>
+</html>
