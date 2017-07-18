@@ -311,6 +311,7 @@ Player.prototype.onStreamDataReceived = function(url) {
   });
 
   var processMetadataCallback = function(type, data, timestamp) {
+    console.log("Metadata: " + timestamp + ", " + data);
     if (self.useSdk_) {
       self.streamManager_.processMetadata(type, data, timestamp);
     }
