@@ -87,6 +87,7 @@ Player.prototype.initStreamManager_ = function() {
         //   "language": "fr"
         // }
         self.subtitles = event.getStreamData().subtitles;
+        streamUrl = "https://truman-qa.sandbox.google.com/ondemand/hls/content/19823/vid/ima-test/ATL/streams/9ff210bc-d9cf-46b0-9709-b7df67b4cfe1/master.m3u8";
         onStreamDataReceived(streamUrl);
       },
       false);
