@@ -124,7 +124,7 @@ Player.prototype.onAdError_ = function(adErrorEvent) {
   if (this.adsManager_) {
     this.adsManager_.destroy();
   }
-  this.mediaElement_.play();
+  this.onContentResumeRequested_();
 };
 
 /**
